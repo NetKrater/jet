@@ -128,10 +128,12 @@ const ejecutora = async (frame, io) => {
         });
     });
 
-    server.listen(3000, async () => {
-        console.log('Servidor corriendo en http://localhost:3000');
+    // Configuración para producción y local
+    const PORT = process.env.PORT || 3000;
+    server.listen(PORT, async () => {
+        console.log(`Servidor corriendo en http://localhost:${PORT}`);
         const newPage = await browser.newPage();
-        await newPage.goto('http://localhost:3000');
+        await newPage.goto(`http://localhost:${PORT}`);
     });
 
     ejecutora(frame, io);
