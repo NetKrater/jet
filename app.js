@@ -103,8 +103,8 @@ const ejecutora = async (frame, io) => {
 // Configuración del servidor Express y socket.io
 (async () => {
     const browser = await puppeteer.launch({
-        headless: false,
-        args: ['--window-size=980,1020']
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const { page, frame } = await iniciarSesionYNavegar(browser, usuario, contrasena);
