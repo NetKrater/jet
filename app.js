@@ -100,11 +100,17 @@ const ejecutora = async (frame, io) => {
     }
 };
 
-// Configuración del servidor Express y socket.io
+// Configuración del servidor Express y Socket.IO
 (async () => {
     const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        headless: true, // Asegura que Puppeteer funcione en producción
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--window-size=980,1020'
+        ]
     });
 
     const { page, frame } = await iniciarSesionYNavegar(browser, usuario, contrasena);
@@ -121,24 +127,28 @@ const ejecutora = async (frame, io) => {
 
     io.on('connection', (socket) => {
         console.log('Nuevo cliente conectado');
-        socket.emit('initialData', { resultadoFinal, historialResultados });
+        socket.emit('initialData', { historialResultados });
 
         socket.on('disconnect', () => {
             console.log('Cliente desconectado');
         });
     });
 
-    // Configuración para producción y local
     const PORT = process.env.PORT || 3000;
     server.listen(PORT, async () => {
         console.log(`Servidor corriendo en http://localhost:${PORT}`);
-        const newPage = await browser.newPage();
-        await newPage.goto(`http://localhost:${PORT}`);
+
+        // Abrir una pestaña solo si se ejecuta en local
+        if (!process.env.PORT) {
+            const newPage = await browser.newPage();
+            await newPage.goto(`http://localhost:${PORT}`);
+        }
     });
 
     ejecutora(frame, io);
 
     process.on('SIGINT', async () => {
+        console.log('Cerrando navegador...');
         await browser.close();
         process.exit();
     });
