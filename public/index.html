@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tendencias de Números</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.0"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: linear-gradient(to bottom, #262c2c, #0e0f13);
+        }
+        #clock {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            background-color: rgba(0, 0, 0, 0);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 0px solid white;
+        }
+        #alerta-tendencia {
+            text-align: center;
+            padding: 4px;
+            font-size: 13px;
+            color: white;
+            flex: 0 0 auto;
+            border: 0.5px solid white;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-family: 'Roboto Mono', sans-serif;
+        }
+        .alerta-alcista {
+            background-color: green;
+        }
+        .alerta-bajista {
+            background-color: red;
+        }
+        .alerta-normal {
+            background-color: blue;
+        }
+        #chart-container {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 9px;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: calc(100% - 0px);
+            height: calc(100% - 100px);
+        }
+        #chart-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            height: 100%;
+            max-height: 340px;
+            position: relative;
+        }
+        #myChart {
+            width: 100%;
+            height: 100%;
+        }
+        #status {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            flex: 0 0 auto;
+        }
+        .cronometro {
+            margin: 6px;
+            font-family: 'Roboto Mono', sans-serif;
+            color: white;
+        }
+        #number-list-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        #number-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 5px;
+            max-width: 100%;
+        }
+        #number-list li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 6px;
+            border-radius: 5px;
+            color: rgb(255, 255, 255);
+            background: #f4f4f4;
+            border: 0.5px solid white;
+            font-size: 11px;
+            text-align: center;
+            font-family: 'Roboto Mono', sans-serif;
+            margin: 2px;
+        }
+        #manual-entry {
+            text-align: center;
+            margin: 10px 0;
+            flex: 0 0 auto;
+        }
+        #sumador {
+            text-align: center;
+            margin: 10px 0;
+            flex: 0 0 auto;
+        }
+        #suma-acumulada {
+            position: absolute;
+            top: 1.6px;
+            right: 1px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            background-color: rgba(250, 24, 250, 0);
+            color: rgb(34, 34, 34);
+            padding: 3.5px 7px;
+            border-radius: 14px;
+            border: 0px solid rgb(235, 220, 14);
+            
+            
+        }
+        #info-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-top: 1px;
+            font-size: 12px;
+            color: white;
+            position: absolute;
+            top: 435px;
+            right: 4px;
+            padding: 0px;
+            border: 1px solid rgba(255, 255, 255, 0.123);
+            background-color: rgba(0, 0, 0, 0);
+        }
+        #hora-extraida, #diferencias-list {
+            text-align: right;
+            font-size: 13px;
+            margin: 5px;
+        }
+        .label {
+            text-align: center;
+            font-size: 11px;
+            color: #ffc1c14f;
+            margin-bottom: 0px;
+        }
+        #cronometros-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            position: absolute;
+            left: 10px;
+            bottom: 0px;
+            font-size: 12px;
+            padding: 0px;
+            border: 1px solid rgba(255, 255, 255, 0.123);
+            background-color: rgba(0, 0, 0, 0);
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .cronometro-container {
+            display: flex;
+            align-items: center;
+        }
+        .cronometro-label {
+            margin-right: 2px;
+            color: gray;
+            font-family: 'Roboto Mono', sans-serif;
+            font-size: 11px;
+        }
+        .cronometro-icon {
+            margin-left: 0px;
+            font-size: 8px;
+        }
+        #alerts-container {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px; /* Vertical gap between boxes */
+}
+
+.alert-box {
+    text-align: center;
+    padding: 10px;
+    font-size: 13px;
+    color: white;
+    background-color: rgba(255, 0, 0, 0.7);
+    border: 0.5px solid white;
+    border-radius: 5px;
+    width: 90%;
+    display: none; /* Inicialmente oculto */
+}
+
+#manual-entry {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #manual-entry-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock"></div>
+    <div id="suma-acumulada">0</div>
+    <div id="alerta-tendencia" class="alerta alerta-normal">Tendencia Normal</div>
+    <div id="number-list-container">
+        <ul id="number-list"></ul>
+    </div>
+    <div id="alerts-container">
+        <div id="alert-container1" class="alert-box"></div>
+        <div id="alert-container2" class="alert-box"></div>
+    </div>
+    <div id="chart-container">
+        <div id="chart-wrapper">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+    <div id="info-container">
+        <div class="label">Hora Rosa</div>
+        <div id="hora-extraida">Hora de última extracción >= 10:</div>
+        <div class="label">Diferencia</div>
+        <div id="diferencias-list"></div>
+    </div>
+    <div id="cronometros-container">
+        <div class="column">
+            <div class="label">Tiempo</div>
+            <div class="cronometro-container">
+                <div class="cronometro-label">2<span class="cronometro-icon">⏱️</span></div>
+                <div class="cronometro" id="cronometro1">01:50</div>
+            </div>
+            <div class="cronometro-container">
+                <div class="cronometro-label">3<span class="cronometro-icon">⏱️</span></div>
+                <div class="cronometro" id="cronometro2">01:00</div>
+            </div>
+            <div class="cronometro-container">
+                <div class="cronometro-label">4<span class="cronometro-icon">⏱️</span></div>
+                <div class="cronometro" id="cronometro3">01:00</div>
+            </div>
+            <div class="cronometro-container">
+                <div class="cronometro-label">5<span class="cronometro-icon">⏱️</span></div>
+                <div class="cronometro" id="cronometro4">01:00</div>
+            </div>
+            <div class="cronometro-container">
+                <div class="cronometro-label">6<span class="cronometro-icon">⏱️</span></div>
+                <div class="cronometro" id="cronometro5">01:00</div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="label">Tiempo</div>
+            <div class="cronometro-container">
+                <div class="cronometro-label">7<span class="cronometro-icon">⏱️</span></div>
+                <div class="cronometro" id="cronometro6">01:00</div>
+            </div>
+            <div class="cronometro-container">
+                <div class="cronometro-label">8<span class="cronometro-icon">⏱️</span></div>
+                <div class="cronometro" id="cronometro7">01:00</div>
+            </div>
+            <div class="cronometro-container">
+                <div class="cronometro-label">9<span class="cronometro-icon">⏱️</span></div>
+                <div class="cronometro" id="cronometro8">01:00</div>
+            </div>
+            <div class="cronometro-container">
+                <div class="cronometro-label">10<span class="cronometro-icon">⏱️</span></div>
+                <div class="cronometro" id="cronometro9">01:00</div>
+            </div>
+            <div class="cronometro-container">
+                <div class="cronometro-label">11<span class="cronometro-icon">⏱️</span></div>
+                <div class="cronometro" id="cronometro10">01:00</div>
+            </div>
+        </div>
+    </div>
+    <div id="sumador">
+        <h2></h2>
+        <p><span id="suma-acumulada">0</span></p>
+    </div>
+    <div id="manual-entry">
+        <div id="manual-entry-menu" style="display: none;">
+            <input type="number" id="manual-input" placeholder="Enter a number">
+            <button id="add-manual-number">Add Number</button>
+            <button id="delete-manual-number">Delete Number</button>
+        </div>
+        <button id="connect-button">Connect Automatic Grapher</button>
+        <button id="manual-entry-button">Activate Manual</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let resultadoFinal = '';
+        let serieNumeros = [];
+        let historialResultados = [];
+        let sumaAcumulada = 0;
+        let sumaActual = 0;
+        let horaUltimaExtraccion = "";
+        let horaExtraccionAnterior = "";
+        let diferenciasHoras = [];
+        let cronometros = [];
+        let currentCronometro = 0;
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        const connectButton = document.getElementById('connect-button');
+        const manualEntryButton = document.getElementById('manual-entry-button');
+        const manualEntryMenu = document.getElementById('manual-entry-menu');
+        const manualInput = document.getElementById('manual-input');
+        const addManualNumberButton = document.getElementById('add-manual-number');
+        const deleteManualNumberButton = document.getElementById('delete-manual-number');
+
+        let isAutomaticMode = true;
+
+        connectButton.addEventListener('click', () => {
+            if (!isAutomaticMode) {
+                // Connect the automatic grapher
+                console.log('Connecting automatic grapher...');
+                isAutomaticMode = true;
+                manualEntryMenu.style.display = 'none';
+            }
+        });
+
+        manualEntryButton.addEventListener('click', () => {
+            if (isAutomaticMode) {
+                // Disconnect the automatic grapher
+                console.log('Disconnecting automatic grapher...');
+                isAutomaticMode = false;
+                manualEntryMenu.style.display = 'block';
+            }
+        });
+
+        addManualNumberButton.addEventListener('click', () => {
+            const manualNumber = parseFloat(manualInput.value);
+            if (!isNaN(manualNumber)) {
+                fetch('/manual-entry', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ numero: manualNumber })
+                }).then(response => {
+                    if (response.ok) {
+                        console.log('Number added successfully');
+                        manualInput.value = '';
+                    } else {
+                        console.error('Failed to add number');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            } else {
+                alert('Please enter a valid number.');
+            }
+        });
+
+        deleteManualNumberButton.addEventListener('click', () => {
+            if (serieNumeros.length > 0) {
+                serieNumeros.pop();
+                historialResultados.pop();
+                resultadoFinal = historialResultados[historialResultados.length - 1];
+                actualizarGrafica({ historialResultados });
+                console.log('Number deleted successfully');
+                manualInput.value = '';
+            } else {
+                console.error('Failed to delete number');
+            }
+        });
+
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Números extraídos',
+                    data: [],
+                    borderColor: 'rgba(255, 255, 255, 1)',
+                    backgroundColor: 'rgba(255, 193, 7, 0)',
+                    borderWidth: 1.3,
+                    fill: false,
+                    pointBackgroundColor: [],
+                    pointBorderColor: [],
+                    pointRadius: 4,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: 0
+                },
+                scales: {
+                    x: {
+                        display: false
+                    },
+                    y: {
+                        beginAtZero: true,
+                        min: function() {
+                            return Math.min(...serieNumeros, 0);
+                        },
+                        max: function() {
+                            return Math.max(...serieNumeros, 10);
+                        },
+                        ticks: {
+                            stepSize: 1,
+                            callback: function(value) {
+                                return value.toString();
+                            },
+                        },
+                        grid: {
+                            color: function(context) {
+                                return serieNumeros.includes(context.tick.value) ? '#e0e0e0' : 'transparent';
+                            },
+                            drawBorder: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    annotation: {
+                        annotations: []
+                    }
+                }
+            }
+        });
+
+        function agregarNumero(nuevoNumero) {
+            let convertedVal = (nuevoNumero >= 2) ? 1 : -1;
+            let fechaHora = new Date();
+
+            if (serieNumeros.length > 0) {
+                let ultimoValor = serieNumeros[serieNumeros.length - 1];
+                serieNumeros.push(ultimoValor + convertedVal);
+            } else {
+                serieNumeros.push(convertedVal);
+            }
+
+            if (serieNumeros.length > 32) {
+                serieNumeros.shift();
+            }
+
+            historialResultados.push(nuevoNumero);
+            if (historialResultados.length > 32) {
+                historialResultados.shift();
+            }
+
+            if (nuevoNumero >= 10) {
+                sumaActual = 0;
+                horaExtraccionAnterior = horaUltimaExtraccion;
+                horaUltimaExtraccion = fechaHora.toLocaleTimeString();
+                if (horaExtraccionAnterior) {
+                    let diferencia = calcularDiferenciaHoras(horaExtraccionAnterior, horaUltimaExtraccion);
+                    document.getElementById('hora-extraida').textContent = "" + horaUltimaExtraccion;
+
+                    diferenciasHoras.unshift(diferencia);
+                    if (diferenciasHoras.length > 6) {
+                        diferenciasHoras.pop();
+                    }
+                    actualizarDiferencias();
+                } else {
+                    document.getElementById('hora-extraida').textContent = "" + horaUltimaExtraccion;
+                    document.getElementById('diferencias-list').textContent = "";
+                }
+                reiniciarCronometros();
+            } else if (nuevoNumero >= 1 && nuevoNumero < 10) {
+                sumaActual += nuevoNumero / 2;
+            }
+
+            document.getElementById('suma-acumulada').textContent = sumaActual.toFixed(2);
+        }
+
+        function actualizarDiferencias() {
+            const diferenciasList = document.getElementById('diferencias-list');
+            diferenciasList.innerHTML = '';
+            diferenciasHoras.forEach((diferencia) => {
+                const diferenciaItem = document.createElement('div');
+                diferenciaItem.textContent = diferencia;
+                diferenciasList.appendChild(diferenciaItem);
+            });
+        }
+
+        function calcularDiferenciaHoras(horaAnterior, horaActual) {
+            let [h1, m1, s1] = horaAnterior.split(':').map(Number);
+            let [h2, m2, s2] = horaActual.split(':').map(Number);
+
+            let fecha1 = new Date();
+            fecha1.setHours(h1, m1, s1);
+
+            let fecha2 = new Date();
+            fecha2.setHours(h2, m2, s2);
+
+            let diferenciaMs = Math.abs(fecha2 - fecha1);
+            let diferenciaHoras = Math.floor(diferenciaMs / 3600000);
+            let diferenciaMinutos = Math.floor((diferenciaMs % 3600000) / 60000);
+            let diferenciaSegundos = Math.floor((diferenciaMs % 60000) / 1000);
+
+            return `${diferenciaMinutos}m ${diferenciaSegundos}s`;
+        }
+
+        function actualizarListaNumeros() {
+            const numberList = document.getElementById('number-list');
+            numberList.innerHTML = '';
+
+            const ultimosNumeros = historialResultados.slice(-14).reverse();
+
+            ultimosNumeros.forEach(numero => {
+                const listItem = document.createElement('li');
+                if (typeof numero === 'number') {
+                    listItem.textContent = Number.isInteger(numero) ? `${numero}.00x` : `${numero.toFixed(2)}x`;
+                } else {
+                    listItem.textContent = numero;
+                }
+                listItem.style.backgroundColor = obtenerColorFondo(numero);
+                numberList.appendChild(listItem);
+            });
+        }
+
+        function obtenerColorFondo(valor) {
+            if (valor >= 10) {
+                return 'rgba(255, 0, 255, 1)';
+            } else if (valor >= 2 && valor < 3) {
+                return 'rgba(145, 62, 248, 1)';
+            } else if (valor >= 6 && valor < 10) {
+                return 'rgba(0, 255, 0, 1)';
+            } else if (valor >= 3 && valor < 6) {
+                return 'rgba(255, 215, 0, 1)';
+            } else if (valor >= 1.5 && valor < 2) {
+                return 'rgba(52, 180, 255, 1)';
+            } else {
+                return 'rgba(245, 47, 47, 1)';
+            }
+        }
+
+        function obtenerColorPunto(valor) {
+            if (valor >= 10) {
+                return 'rgba(255, 0, 255, 1)';
+            } else if (valor >= 6 && valor < 10) {
+                return 'rgba(0, 255, 0, 1)';
+            } else if (valor >= 3 && valor < 6) {
+                return 'rgba(255, 215, 0, 1)';
+            } else if (valor >= 2 && valor < 3) {
+                return 'rgba(145, 62, 248, 1)';
+            } else {
+                return 'rgba(210, 210, 210, 1)';
+            }
+        }
+
+        function actualizarGrafica(datos) {
+    const numeros = datos.historialResultados;
+
+    const nuevosNumeros = numeros.slice(historialResultados.length);
+
+    nuevosNumeros.forEach(n => {
+        agregarNumero(n);
+    });
+
+    historialResultados = numeros.slice();
+
+    myChart.data.labels = Array.from({ length: serieNumeros.length }, (_, i) => i + 1);
+    myChart.data.datasets[0].data = serieNumeros;
+
+    const coloresPuntos = numeros.slice(-32).map(n => obtenerColorPunto(n));
+    myChart.data.datasets[0].pointBackgroundColor = coloresPuntos;
+    myChart.data.datasets[0].pointBorderColor = coloresPuntos;
+
+    myChart.options.scales.y.min = Math.min(...serieNumeros);
+    myChart.options.scales.y.max = Math.max(...serieNumeros);
+
+    // Identificar soporte y resistencia basados en los últimos 5 puntos
+    const ultimosPuntos = serieNumeros.slice(-6);
+    const soporte = Math.min(...ultimosPuntos);
+    const resistencia = Math.max(...ultimosPuntos);
+
+    // Contar la frecuencia de cada punto
+    const frecuenciaPuntos = ultimosPuntos.reduce((acc, valor) => {
+        acc[valor] = (acc[valor] || 0) + 1;
+        return acc;
+    }, {});
+
+    // Determinar el color de las líneas de soporte y resistencia
+    let colorSoporte = 'rgba(235, 220, 14)'; // Naranja por defecto
+    let colorResistencia = 'rgba(235, 220, 14)'; // Naranja por defecto
+
+    if (frecuenciaPuntos[soporte] === 2) {
+        colorSoporte = 'rgba(0, 255, 0, 1)'; // Verde si hay 2 puntos en el soporte
+    } else if (frecuenciaPuntos[soporte] >= 3) {
+        colorSoporte = 'rgba(255, 165, 0, 0.7)'; // Naranja si hay más de 3 puntos en el soporte
+    }
+
+    if (frecuenciaPuntos[resistencia] >= 2 && frecuenciaPuntos[resistencia] <= 3) {
+        colorResistencia = 'rgba(255, 0, 0, 1)'; // Rojo si hay 1 a 3 puntos en la resistencia
+    } else if (frecuenciaPuntos[resistencia] > 3) {
+        colorResistencia = 'rgba(255, 165, 0, 0.7)'; // Naranja si hay más de 3 puntos en la resistencia
+    }
+
+    // Agregar líneas de soporte y resistencia con los colores actualizados
+    myChart.options.plugins.annotation.annotations = [
+        {
+            type: 'line',
+            mode: 'horizontal',
+            scaleID: 'y',
+            value: soporte,
+            borderColor: colorSoporte,
+            borderWidth: 1.4,
+            label: {
+                content: 'Soporte',
+                enabled: true,
+                position: 'start'
+            }
+        },
+        {
+            type: 'line',
+            mode: 'horizontal',
+            scaleID: 'y',
+            value: resistencia,
+            borderColor: colorResistencia,
+            borderWidth: 1.4,
+            label: {
+                content: 'Resistencia',
+                enabled: true,
+                position: 'start'
+            }
+        }
+    ];
+
+    myChart.update();
+    actualizarListaNumeros();
+    actualizarAlertaTendencia();
+}
+
+        function obtenerDatos() {
+            fetch('/data')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Datos obtenidos:', data);
+                    actualizarGrafica(data);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function actualizarAlertaTendencia() {
+            const alertaTendencia = document.getElementById('alerta-tendencia');
+            if (serieNumeros.length < 4) {
+                alertaTendencia.textContent = 'Tendencia no disponible';
+                alertaTendencia.className = '';
+                return;
+            }
+
+            let tendencia = "normal";
+
+            let smaShort = calcularSMA(serieNumeros, 5);
+            let smaLong = calcularSMA(serieNumeros, 10);
+
+            if (smaShort > smaLong) {
+                tendencia = "alcista";
+            } else if (smaShort < smaLong) {
+                tendencia = "bajista";
+            }
+
+            switch (tendencia) {
+                case 'normal':
+                    alertaTendencia.textContent = 'Tendencia Normal';
+                    alertaTendencia.className = 'alerta alerta-normal';
+                    break;
+                case 'alcista':
+                    alertaTendencia.textContent = 'Tendencia Alcista';
+                    alertaTendencia.className = 'alerta alerta-alcista';
+                    break;
+                case 'bajista':
+                    alertaTendencia.textContent = 'Tendencia Bajista';
+                    alertaTendencia.className = 'alerta alerta-bajista';
+                    break;
+            }
+        }
+
+        function calcularSMA(data, windowSize) {
+            let sma = [];
+            for (let i = windowSize - 1; i < data.length; i++) {
+                let sum = 0;
+                for (let j = 0; j < windowSize; j++) {
+                    sum += data[i - j];
+                }
+                sma.push(sum / windowSize);
+            }
+            return sma[sma.length - 1];
+        }
+
+        function actualizarReloj() {
+            const ahora = new Date();
+            const horas = ahora.getHours().toString().padStart(2, '0');
+            const minutos = ahora.getMinutes().toString().padStart(2, '0');
+            const segundos = ahora.getSeconds().toString().padStart(2, '0');
+            document.getElementById('clock').textContent = `${horas}:${minutos}:${segundos}`;
+        }
+
+        function iniciarCronometro(id, duracion, indice) {
+            const display = document.getElementById(id);
+            const label = display.previousElementSibling;
+            clearInterval(cronometros[indice]);
+
+            let timer = duracion, minutes, seconds;
+            cronometros[indice] = setInterval(() => {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (timer === 0) {
+                    clearInterval(cronometros[indice]);
+                    display.style.color = 'gray';
+                    label.style.color = 'gray';
+                    iniciarSiguienteCronometro(indice + 1);
+                } else if (timer <= 15) {
+                    display.style.color = 'green';
+                } else {
+                    display.style.color = 'yellow';
+                }
+
+                label.style.color = 'red';
+
+                timer--;
+            }, 1000);
+        }
+
+        function resetCronometroColors() {
+            const ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            ids.forEach((id) => {
+                const display = document.getElementById(`cronometro${id}`);
+                if (display) {
+                    display.style.color = 'white';
+                    const label = display.previousElementSibling;
+                    if (label) {
+                        label.style.color = 'gray';
+                    }
+                }
+            });
+        }
+
+        function iniciarSiguienteCronometro(indice) {
+            if (indice < cronometros.length) {
+                const duraciones = [110, 60, 60, 60, 60, 60, 60, 60, 60, 60];
+                iniciarCronometro(`cronometro${indice + 1}`, duraciones[indice], indice);
+            }
+        }
+
+        function reiniciarCronometros() {
+            cronometros.forEach(clearInterval);
+            resetCronometroColors();
+            currentCronometro = 0;
+            iniciarSiguienteCronometro(currentCronometro);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const duraciones = [110, 60, 60, 60, 60, 60, 60, 60, 60, 60];
+            duraciones.forEach((duracion, index) => {
+                cronometros.push(null);
+                iniciarCronometro(`cronometro${index + 1}`, duracion, index);
+            });
+
+            setInterval(obtenerDatos, 2000);
+            setInterval(actualizarReloj, 1000);
+            setInterval(actualizarAlertaTendencia, 10000);
+        });
+
+        const socket = io();
+
+        socket.on('initialData', (data) => {
+            console.log('Datos iniciales recibidos:', data);
+            actualizarGrafica(data);
+        });
+
+        socket.on('nuevoNumero', (data) => {
+            console.log('Nuevo número recibido:', data);
+            actualizarGrafica(data);
+        });
+
+        socket.on('alertaCondicion', (data) => {
+            const alertContainer1 = document.getElementById('alert-container1');
+            const alertContainer2 = document.getElementById('alert-container2');
+
+            if (alertContainer1.style.display === 'none') {
+                alertContainer1.textContent = data.message;
+                alertContainer1.style.display = 'block';
+            } else if (alertContainer2.style.display === 'none') {
+                alertContainer2.textContent = data.message;
+                alertContainer2.style.display = 'block';
+            } else {
+                alertContainer1.textContent = data.message;
+                alertContainer1.style.display = 'block';
+            }
+
+            setTimeout(() => {
+                if (alertContainer1.textContent === data.message) {
+                    alertContainer1.style.display = 'none';
+                } else if (alertContainer2.textContent === data.message) {
+                    alertContainer2.style.display = 'none';
+                }
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1020 @@
+<!DOCTYPE html><html dir="ltr"><head><title>
+	JetX
+</title>
+    <link rel="stylesheet" type="text/css" href="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/StylesLight/fonts.css">
+    <link rel="stylesheet" type="text/css" href="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/StylesLight/style.css">
+
+    <link href="https://mt-static.ssgcontent.com/cache/b2/Themes/Default/JetX/Styles/fonts.css" rel="stylesheet" type="text/css">
+    <link href="https://mt-static.ssgcontent.com/cache/b2/Themes/Default/JetX/Styles/style.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var App = /*#__PURE__*/function (_React$Component) {
+  _inherits(App, _React$Component);
+
+  var _super = _createSuper(App);
+
+  function App() {
+    var _this;
+
+    _classCallCheck(this, App);
+
+    _this = _super.call(this);
+
+    _defineProperty(_assertThisInitialized(_this), "state", {
+      current: [],
+      active: [],
+      cashOut: [],
+      activeHeight: 0,
+      activePaddingTop: 0,
+      cashOutHeight: 0,
+      cashOutPaddingTop: 0
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "setCurrent", function (list) {
+      _this.setState(function (state) {
+        var current = list;
+        return {
+          current: current
+        };
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "setActive", function (list, height, paddingTop) {
+      _this.setState(function (state) {
+        var active = list;
+        var activeHeight = height;
+        var activePaddingTop = paddingTop;
+        return {
+          active: active,
+          activeHeight: activeHeight,
+          activePaddingTop: activePaddingTop
+        };
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "setCashOut", function (list, height, paddingTop) {
+      _this.setState(function (state) {
+        var cashOut = list;
+        var cashOutHeight = height;
+        var cashOutPaddingTop = paddingTop;
+        return {
+          cashOut: cashOut,
+          cashOutHeight: cashOutHeight,
+          cashOutPaddingTop: cashOutPaddingTop
+        };
+      });
+    });
+
+    window.jetXReact = _assertThisInitialized(_this);
+    return _this;
+  }
+
+  _createClass(App, [{
+    key: "formatAmount",
+    value: function formatAmount(amount, currency) {
+      amount = parseFloat(amount);
+
+      if (amount === 0) {
+        return /*#__PURE__*/React.createElement(React.Fragment, null, "--");
+      }
+
+      return /*#__PURE__*/React.createElement(React.Fragment, null, amount.toFixed(currency.fractionDigit), " ", /*#__PURE__*/React.createElement("span", {
+        className: "currency"
+      }, currency.currencyCode));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var current = this.state.current;
+      var playersCurrent = current.map(function (item) {
+        var playerId = item.playerId,
+            status = item.status,
+            displayName = item.displayName,
+            betAmount = item.betAmount,
+            cashoutFormated = item.cashoutFormated,
+            winAmount = item.winAmount,
+            currency = item.currency;
+        return /*#__PURE__*/React.createElement("div", {
+          className: 'row' + status,
+          key: playerId
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "col1"
+        }, /*#__PURE__*/React.createElement("div", null, displayName)), /*#__PURE__*/React.createElement("div", {
+          className: "col2"
+        }, _this2.formatAmount(betAmount, currency)), /*#__PURE__*/React.createElement("div", {
+          className: "col3"
+        }, cashoutFormated), /*#__PURE__*/React.createElement("div", {
+          className: "col4"
+        }, _this2.formatAmount(winAmount, currency)));
+      });
+      var active = this.state.active;
+      var activeHeight = this.state.activeHeight;
+      var activePaddingTop = this.state.activePaddingTop;
+      var playersActive = active.map(function (item) {
+        var playerId = item.playerId,
+            status = item.status,
+            displayName = item.displayName,
+            betAmount = item.betAmount,
+            cashoutFormated = item.cashoutFormated,
+            winAmount = item.winAmount,
+            currency = item.currency;
+        return /*#__PURE__*/React.createElement("div", {
+          className: 'row' + status,
+          key: playerId
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "col1"
+        }, /*#__PURE__*/React.createElement("div", null, displayName)), /*#__PURE__*/React.createElement("div", {
+          className: "col2"
+        }, _this2.formatAmount(betAmount, currency)), /*#__PURE__*/React.createElement("div", {
+          className: "col3"
+        }, cashoutFormated), /*#__PURE__*/React.createElement("div", {
+          className: "col4"
+        }, _this2.formatAmount(winAmount, currency)));
+      });
+      var cashOut = this.state.cashOut;
+      var cashOutHeight = this.state.cashOutHeight;
+      var cashOutPaddingTop = this.state.cashOutPaddingTop;
+      var playersCashOut = cashOut.map(function (item) {
+        var playerId = item.playerId,
+            status = item.status,
+            displayName = item.displayName,
+            betAmount = item.betAmount,
+            cashoutFormated = item.cashoutFormated,
+            winAmount = item.winAmount,
+            currency = item.currency;
+        return /*#__PURE__*/React.createElement("div", {
+          className: 'row' + status,
+          key: playerId
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "col1"
+        }, /*#__PURE__*/React.createElement("div", null, displayName)), /*#__PURE__*/React.createElement("div", {
+          className: "col2"
+        }, _this2.formatAmount(betAmount, currency)), /*#__PURE__*/React.createElement("div", {
+          className: "col3"
+        }, cashoutFormated), /*#__PURE__*/React.createElement("div", {
+          className: "col4"
+        }, _this2.formatAmount(winAmount, currency)));
+      });
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+        id: "playersCurrent"
+      }, playersCurrent), /*#__PURE__*/React.createElement("div", {
+        id: "playersActive",
+        style: {
+          height: activeHeight,
+          paddingTop: activePaddingTop
+        }
+      }, playersActive), /*#__PURE__*/React.createElement("div", {
+        id: "playersCashOut",
+        style: {
+          height: cashOutHeight,
+          paddingTop: cashOutPaddingTop
+        }
+      }, playersCashOut));
+    }
+  }]);
+
+  return App;
+}(React.Component);
+
+ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById('players'));
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImh0dHBzOi8vbXQtc3RhdGljLnNzZ2NvbnRlbnQuY29tL2NhY2hlL2IxL0pldFhTdGczL0NvbnRlbnQvU2NyaXB0cy9yZWFjdC9yZWFjdC5qcyJdLCJuYW1lcyI6WyJBcHAiLCJjdXJyZW50IiwiYWN0aXZlIiwiY2FzaE91dCIsImFjdGl2ZUhlaWdodCIsImFjdGl2ZVBhZGRpbmdUb3AiLCJjYXNoT3V0SGVpZ2h0IiwiY2FzaE91dFBhZGRpbmdUb3AiLCJsaXN0Iiwic2V0U3RhdGUiLCJzdGF0ZSIsImhlaWdodCIsInBhZGRpbmdUb3AiLCJ3aW5kb3ciLCJqZXRYUmVhY3QiLCJhbW91bnQiLCJjdXJyZW5jeSIsInBhcnNlRmxvYXQiLCJ0b0ZpeGVkIiwiZnJhY3Rpb25EaWdpdCIsImN1cnJlbmN5Q29kZSIsInBsYXllcnNDdXJyZW50IiwibWFwIiwiaXRlbSIsInBsYXllcklkIiwic3RhdHVzIiwiZGlzcGxheU5hbWUiLCJiZXRBbW91bnQiLCJjYXNob3V0Rm9ybWF0ZWQiLCJ3aW5BbW91bnQiLCJmb3JtYXRBbW91bnQiLCJwbGF5ZXJzQWN0aXZlIiwicGxheWVyc0Nhc2hPdXQiLCJSZWFjdCIsIkNvbXBvbmVudCIsIlJlYWN0RE9NIiwicmVuZGVyIiwiZG9jdW1lbnQiLCJnZXRFbGVtZW50QnlJZCJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7SUFBTUEsRzs7Ozs7QUFXRixpQkFBYztBQUFBOztBQUFBOztBQUNWOztBQURVLDREQVZOO0FBQ0pDLE1BQUFBLE9BQU8sRUFBRSxFQURMO0FBRUpDLE1BQUFBLE1BQU0sRUFBRSxFQUZKO0FBR0pDLE1BQUFBLE9BQU8sRUFBRSxFQUhMO0FBSUpDLE1BQUFBLFlBQVksRUFBRSxDQUpWO0FBS0pDLE1BQUFBLGdCQUFnQixFQUFFLENBTGQ7QUFNSkMsTUFBQUEsYUFBYSxFQUFFLENBTlg7QUFPSkMsTUFBQUEsaUJBQWlCLEVBQUU7QUFQZixLQVVNOztBQUFBLGlFQU1ELFVBQUNDLElBQUQsRUFBVTtBQUNuQixZQUFLQyxRQUFMLENBQWMsVUFBQ0MsS0FBRCxFQUFXO0FBQ3JCLFlBQU1ULE9BQU8sR0FBR08sSUFBaEI7QUFDQSxlQUFPO0FBQUNQLFVBQUFBLE9BQU8sRUFBUEE7QUFBRCxTQUFQO0FBQ0gsT0FIRDtBQUlILEtBWGE7O0FBQUEsZ0VBYUYsVUFBQ08sSUFBRCxFQUFPRyxNQUFQLEVBQWVDLFVBQWYsRUFBOEI7QUFDdEMsWUFBS0gsUUFBTCxDQUFjLFVBQUNDLEtBQUQsRUFBVztBQUNyQixZQUFNUixNQUFNLEdBQUdNLElBQWY7QUFDQSxZQUFNSixZQUFZLEdBQUdPLE1BQXJCO0FBQ0EsWUFBTU4sZ0JBQWdCLEdBQUdPLFVBQXpCO0FBQ0EsZUFBTztBQUFDVixVQUFBQSxNQUFNLEVBQU5BLE1BQUQ7QUFBU0UsVUFBQUEsWUFBWSxFQUFaQSxZQUFUO0FBQXVCQyxVQUFBQSxnQkFBZ0IsRUFBaEJBO0FBQXZCLFNBQVA7QUFDSCxPQUxEO0FBTUgsS0FwQmE7O0FBQUEsaUVBc0JELFVBQUNHLElBQUQsRUFBT0csTUFBUCxFQUFlQyxVQUFmLEVBQThCO0FBQ3ZDLFlBQUtILFFBQUwsQ0FBYyxVQUFDQyxLQUFELEVBQVc7QUFDckIsWUFBTVAsT0FBTyxHQUFHSyxJQUFoQjtBQUNBLFlBQU1GLGFBQWEsR0FBR0ssTUFBdEI7QUFDQSxZQUFNSixpQkFBaUIsR0FBR0ssVUFBMUI7QUFDQSxlQUFPO0FBQUNULFVBQUFBLE9BQU8sRUFBUEEsT0FBRDtBQUFVRyxVQUFBQSxhQUFhLEVBQWJBLGFBQVY7QUFBeUJDLFVBQUFBLGlCQUFpQixFQUFqQkE7QUFBekIsU0FBUDtBQUNILE9BTEQ7QUFNSCxLQTdCYTs7QUFHVk0sSUFBQUEsTUFBTSxDQUFDQyxTQUFQO0FBSFU7QUFJYjs7OztXQTJCRCxzQkFBYUMsTUFBYixFQUFxQkMsUUFBckIsRUFBK0I7QUFDM0JELE1BQUFBLE1BQU0sR0FBR0UsVUFBVSxDQUFDRixNQUFELENBQW5COztBQUNBLFVBQUdBLE1BQU0sS0FBSyxDQUFkLEVBQWlCO0FBQ2IsNEJBQ0ksK0NBREo7QUFHSDs7QUFDRCwwQkFDSSwwQ0FDS0EsTUFBTSxDQUFDRyxPQUFQLENBQWVGLFFBQVEsQ0FBQ0csYUFBeEIsQ0FETCxvQkFDNkM7QUFBTSxRQUFBLFNBQVMsRUFBQztBQUFoQixTQUE0QkgsUUFBUSxDQUFDSSxZQUFyQyxDQUQ3QyxDQURKO0FBS0g7OztXQUVELGtCQUFTO0FBQUE7O0FBQ0wsVUFBTW5CLE9BQU8sR0FBRyxLQUFLUyxLQUFMLENBQVdULE9BQTNCO0FBQ0EsVUFBTW9CLGNBQWMsR0FBR3BCLE9BQU8sQ0FBQ3FCLEdBQVIsQ0FBWSxVQUFDQyxJQUFELEVBQVU7QUFDekMsWUFBT0MsUUFBUCxHQUF5RkQsSUFBekYsQ0FBT0MsUUFBUDtBQUFBLFlBQWlCQyxNQUFqQixHQUF5RkYsSUFBekYsQ0FBaUJFLE1BQWpCO0FBQUEsWUFBeUJDLFdBQXpCLEdBQXlGSCxJQUF6RixDQUF5QkcsV0FBekI7QUFBQSxZQUFzQ0MsU0FBdEMsR0FBeUZKLElBQXpGLENBQXNDSSxTQUF0QztBQUFBLFlBQWlEQyxlQUFqRCxHQUF5RkwsSUFBekYsQ0FBaURLLGVBQWpEO0FBQUEsWUFBa0VDLFNBQWxFLEdBQXlGTixJQUF6RixDQUFrRU0sU0FBbEU7QUFBQSxZQUE2RWIsUUFBN0UsR0FBeUZPLElBQXpGLENBQTZFUCxRQUE3RTtBQUNBLDRCQUNJO0FBQUssVUFBQSxTQUFTLEVBQUUsUUFBUVMsTUFBeEI7QUFBZ0MsVUFBQSxHQUFHLEVBQUVEO0FBQXJDLHdCQUNJO0FBQUssVUFBQSxTQUFTLEVBQUM7QUFBZix3QkFDSSxpQ0FBTUUsV0FBTixDQURKLENBREosZUFJSTtBQUFLLFVBQUEsU0FBUyxFQUFDO0FBQWYsV0FBdUIsTUFBSSxDQUFDSSxZQUFMLENBQWtCSCxTQUFsQixFQUE2QlgsUUFBN0IsQ0FBdkIsQ0FKSixlQUtJO0FBQUssVUFBQSxTQUFTLEVBQUM7QUFBZixXQUF1QlksZUFBdkIsQ0FMSixlQU1JO0FBQUssVUFBQSxTQUFTLEVBQUM7QUFBZixXQUF1QixNQUFJLENBQUNFLFlBQUwsQ0FBa0JELFNBQWxCLEVBQTZCYixRQUE3QixDQUF2QixDQU5KLENBREo7QUFVSCxPQVpzQixDQUF2QjtBQWNBLFVBQU1kLE1BQU0sR0FBRyxLQUFLUSxLQUFMLENBQVdSLE1BQTFCO0FBQ0EsVUFBTUUsWUFBWSxHQUFHLEtBQUtNLEtBQUwsQ0FBV04sWUFBaEM7QUFDQSxVQUFNQyxnQkFBZ0IsR0FBRyxLQUFLSyxLQUFMLENBQVdMLGdCQUFwQztBQUNBLFVBQU0wQixhQUFhLEdBQUc3QixNQUFNLENBQUNvQixHQUFQLENBQVcsVUFBQ0MsSUFBRCxFQUFVO0FBQ3ZDLFlBQU9DLFFBQVAsR0FBeUZELElBQXpGLENBQU9DLFFBQVA7QUFBQSxZQUFpQkMsTUFBakIsR0FBeUZGLElBQXpGLENBQWlCRSxNQUFqQjtBQUFBLFlBQXlCQyxXQUF6QixHQUF5RkgsSUFBekYsQ0FBeUJHLFdBQXpCO0FBQUEsWUFBc0NDLFNBQXRDLEdBQXlGSixJQUF6RixDQUFzQ0ksU0FBdEM7QUFBQSxZQUFpREMsZUFBakQsR0FBeUZMLElBQXpGLENBQWlESyxlQUFqRDtBQUFBLFlBQWtFQyxTQUFsRSxHQUF5Rk4sSUFBekYsQ0FBa0VNLFNBQWxFO0FBQUEsWUFBNkViLFFBQTdFLEdBQXlGTyxJQUF6RixDQUE2RVAsUUFBN0U7QUFDQSw0QkFDSTtBQUFLLFVBQUEsU0FBUyxFQUFFLFFBQVFTLE1BQXhCO0FBQWdDLFVBQUEsR0FBRyxFQUFFRDtBQUFyQyx3QkFDSTtBQUFLLFVBQUEsU0FBUyxFQUFDO0FBQWYsd0JBQ0ksaUNBQU1FLFdBQU4sQ0FESixDQURKLGVBSUk7QUFBSyxVQUFBLFNBQVMsRUFBQztBQUFmLFdBQXVCLE1BQUksQ0FBQ0ksWUFBTCxDQUFrQkgsU0FBbEIsRUFBNkJYLFFBQTdCLENBQXZCLENBSkosZUFLSTtBQUFLLFVBQUEsU0FBUyxFQUFDO0FBQWYsV0FBdUJZLGVBQXZCLENBTEosZUFNSTtBQUFLLFVBQUEsU0FBUyxFQUFDO0FBQWYsV0FBdUIsTUFBSSxDQUFDRSxZQUFMLENBQWtCRCxTQUFsQixFQUE2QmIsUUFBN0IsQ0FBdkIsQ0FOSixDQURKO0FBVUgsT0FacUIsQ0FBdEI7QUFjQSxVQUFNYixPQUFPLEdBQUcsS0FBS08sS0FBTCxDQUFXUCxPQUEzQjtBQUNBLFVBQU1HLGFBQWEsR0FBRyxLQUFLSSxLQUFMLENBQVdKLGFBQWpDO0FBQ0EsVUFBTUMsaUJBQWlCLEdBQUcsS0FBS0csS0FBTCxDQUFXSCxpQkFBckM7QUFDQSxVQUFNeUIsY0FBYyxHQUFHN0IsT0FBTyxDQUFDbUIsR0FBUixDQUFZLFVBQUNDLElBQUQsRUFBVTtBQUN6QyxZQUFPQyxRQUFQLEdBQXlGRCxJQUF6RixDQUFPQyxRQUFQO0FBQUEsWUFBaUJDLE1BQWpCLEdBQXlGRixJQUF6RixDQUFpQkUsTUFBakI7QUFBQSxZQUF5QkMsV0FBekIsR0FBeUZILElBQXpGLENBQXlCRyxXQUF6QjtBQUFBLFlBQXNDQyxTQUF0QyxHQUF5RkosSUFBekYsQ0FBc0NJLFNBQXRDO0FBQUEsWUFBaURDLGVBQWpELEdBQXlGTCxJQUF6RixDQUFpREssZUFBakQ7QUFBQSxZQUFrRUMsU0FBbEUsR0FBeUZOLElBQXpGLENBQWtFTSxTQUFsRTtBQUFBLFlBQTZFYixRQUE3RSxHQUF5Rk8sSUFBekYsQ0FBNkVQLFFBQTdFO0FBQ0EsNEJBQ0k7QUFBSyxVQUFBLFNBQVMsRUFBRSxRQUFRUyxNQUF4QjtBQUFnQyxVQUFBLEdBQUcsRUFBRUQ7QUFBckMsd0JBQ0k7QUFBSyxVQUFBLFNBQVMsRUFBQztBQUFmLHdCQUNJLGlDQUFNRSxXQUFOLENBREosQ0FESixlQUlJO0FBQUssVUFBQSxTQUFTLEVBQUM7QUFBZixXQUF1QixNQUFJLENBQUNJLFlBQUwsQ0FBa0JILFNBQWxCLEVBQTZCWCxRQUE3QixDQUF2QixDQUpKLGVBS0k7QUFBSyxVQUFBLFNBQVMsRUFBQztBQUFmLFdBQXVCWSxlQUF2QixDQUxKLGVBTUk7QUFBSyxVQUFBLFNBQVMsRUFBQztBQUFmLFdBQXVCLE1BQUksQ0FBQ0UsWUFBTCxDQUFrQkQsU0FBbEIsRUFBNkJiLFFBQTdCLENBQXZCLENBTkosQ0FESjtBQVVILE9BWnNCLENBQXZCO0FBY0EsMEJBQ0ksOENBQ0k7QUFBSyxRQUFBLEVBQUUsRUFBQztBQUFSLFNBQTBCSyxjQUExQixDQURKLGVBRUk7QUFBSyxRQUFBLEVBQUUsRUFBQyxlQUFSO0FBQXdCLFFBQUEsS0FBSyxFQUFFO0FBQUNWLFVBQUFBLE1BQU0sRUFBRVAsWUFBVDtBQUF1QlEsVUFBQUEsVUFBVSxFQUFFUDtBQUFuQztBQUEvQixTQUFzRjBCLGFBQXRGLENBRkosZUFHSTtBQUFLLFFBQUEsRUFBRSxFQUFDLGdCQUFSO0FBQXlCLFFBQUEsS0FBSyxFQUFFO0FBQUNwQixVQUFBQSxNQUFNLEVBQUVMLGFBQVQ7QUFBd0JNLFVBQUFBLFVBQVUsRUFBRUw7QUFBcEM7QUFBaEMsU0FBeUZ5QixjQUF6RixDQUhKLENBREo7QUFPSDs7OztFQWpIYUMsS0FBSyxDQUFDQyxTOztBQW9IeEJDLFFBQVEsQ0FBQ0MsTUFBVCxlQUFnQixvQkFBQyxHQUFELE9BQWhCLEVBQXdCQyxRQUFRLENBQUNDLGNBQVQsQ0FBd0IsU0FBeEIsQ0FBeEIiLCJzb3VyY2VzQ29udGVudCI6WyJjbGFzcyBBcHAgZXh0ZW5kcyBSZWFjdC5Db21wb25lbnQge1xyXG4gICAgc3RhdGUgPSB7XHJcbiAgICAgICAgY3VycmVudDogW10sXHJcbiAgICAgICAgYWN0aXZlOiBbXSxcclxuICAgICAgICBjYXNoT3V0OiBbXSxcclxuICAgICAgICBhY3RpdmVIZWlnaHQ6IDAsXHJcbiAgICAgICAgYWN0aXZlUGFkZGluZ1RvcDogMCxcclxuICAgICAgICBjYXNoT3V0SGVpZ2h0OiAwLFxyXG4gICAgICAgIGNhc2hPdXRQYWRkaW5nVG9wOiAwLFxyXG4gICAgfTtcclxuXHJcbiAgICBjb25zdHJ1Y3RvcigpIHtcclxuICAgICAgICBzdXBlcigpO1xyXG5cclxuICAgICAgICB3aW5kb3cuamV0WFJlYWN0ID0gdGhpcztcclxuICAgIH1cclxuXHJcbiAgICBzZXRDdXJyZW50ID0gKGxpc3QpID0+IHtcclxuICAgICAgICB0aGlzLnNldFN0YXRlKChzdGF0ZSkgPT4ge1xyXG4gICAgICAgICAgICBjb25zdCBjdXJyZW50ID0gbGlzdDtcclxuICAgICAgICAgICAgcmV0dXJuIHtjdXJyZW50fTtcclxuICAgICAgICB9KTtcclxuICAgIH07XHJcblxyXG4gICAgc2V0QWN0aXZlID0gKGxpc3QsIGhlaWdodCwgcGFkZGluZ1RvcCkgPT4ge1xyXG4gICAgICAgIHRoaXMuc2V0U3RhdGUoKHN0YXRlKSA9PiB7XHJcbiAgICAgICAgICAgIGNvbnN0IGFjdGl2ZSA9IGxpc3Q7XHJcbiAgICAgICAgICAgIGNvbnN0IGFjdGl2ZUhlaWdodCA9IGhlaWdodDtcclxuICAgICAgICAgICAgY29uc3QgYWN0aXZlUGFkZGluZ1RvcCA9IHBhZGRpbmdUb3A7XHJcbiAgICAgICAgICAgIHJldHVybiB7YWN0aXZlLCBhY3RpdmVIZWlnaHQsIGFjdGl2ZVBhZGRpbmdUb3B9O1xyXG4gICAgICAgIH0pO1xyXG4gICAgfTtcclxuXHJcbiAgICBzZXRDYXNoT3V0ID0gKGxpc3QsIGhlaWdodCwgcGFkZGluZ1RvcCkgPT4ge1xyXG4gICAgICAgIHRoaXMuc2V0U3RhdGUoKHN0YXRlKSA9PiB7XHJcbiAgICAgICAgICAgIGNvbnN0IGNhc2hPdXQgPSBsaXN0O1xyXG4gICAgICAgICAgICBjb25zdCBjYXNoT3V0SGVpZ2h0ID0gaGVpZ2h0O1xyXG4gICAgICAgICAgICBjb25zdCBjYXNoT3V0UGFkZGluZ1RvcCA9IHBhZGRpbmdUb3A7XHJcbiAgICAgICAgICAgIHJldHVybiB7Y2FzaE91dCwgY2FzaE91dEhlaWdodCwgY2FzaE91dFBhZGRpbmdUb3B9O1xyXG4gICAgICAgIH0pO1xyXG4gICAgfTtcclxuXHJcbiAgICBmb3JtYXRBbW91bnQoYW1vdW50LCBjdXJyZW5jeSkge1xyXG4gICAgICAgIGFtb3VudCA9IHBhcnNlRmxvYXQoYW1vdW50KTtcclxuICAgICAgICBpZihhbW91bnQgPT09IDApIHtcclxuICAgICAgICAgICAgcmV0dXJuIChcclxuICAgICAgICAgICAgICAgIDw+LS08Lz5cclxuICAgICAgICAgICAgKTtcclxuICAgICAgICB9XHJcbiAgICAgICAgcmV0dXJuIChcclxuICAgICAgICAgICAgPD5cclxuICAgICAgICAgICAgICAgIHthbW91bnQudG9GaXhlZChjdXJyZW5jeS5mcmFjdGlvbkRpZ2l0KX0gPHNwYW4gY2xhc3NOYW1lPVwiY3VycmVuY3lcIj57Y3VycmVuY3kuY3VycmVuY3lDb2RlfTwvc3Bhbj5cclxuICAgICAgICAgICAgPC8+XHJcbiAgICAgICAgKTtcclxuICAgIH1cclxuXHJcbiAgICByZW5kZXIoKSB7XHJcbiAgICAgICAgY29uc3QgY3VycmVudCA9IHRoaXMuc3RhdGUuY3VycmVudDtcclxuICAgICAgICBjb25zdCBwbGF5ZXJzQ3VycmVudCA9IGN1cnJlbnQubWFwKChpdGVtKSA9PiB7XHJcbiAgICAgICAgICAgIGNvbnN0IHtwbGF5ZXJJZCwgc3RhdHVzLCBkaXNwbGF5TmFtZSwgYmV0QW1vdW50LCBjYXNob3V0Rm9ybWF0ZWQsIHdpbkFtb3VudCwgY3VycmVuY3l9ID0gaXRlbTtcclxuICAgICAgICAgICAgcmV0dXJuIChcclxuICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPXsncm93JyArIHN0YXR1c30ga2V5PXtwbGF5ZXJJZH0+XHJcbiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJjb2wxXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgICAgIDxkaXY+e2Rpc3BsYXlOYW1lfTwvZGl2PlxyXG4gICAgICAgICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sMlwiPnt0aGlzLmZvcm1hdEFtb3VudChiZXRBbW91bnQsIGN1cnJlbmN5KX08L2Rpdj5cclxuICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNvbDNcIj57Y2FzaG91dEZvcm1hdGVkfTwvZGl2PlxyXG4gICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sNFwiPnt0aGlzLmZvcm1hdEFtb3VudCh3aW5BbW91bnQsIGN1cnJlbmN5KX08L2Rpdj5cclxuICAgICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICApO1xyXG4gICAgICAgIH0pO1xyXG5cclxuICAgICAgICBjb25zdCBhY3RpdmUgPSB0aGlzLnN0YXRlLmFjdGl2ZTtcclxuICAgICAgICBjb25zdCBhY3RpdmVIZWlnaHQgPSB0aGlzLnN0YXRlLmFjdGl2ZUhlaWdodDtcclxuICAgICAgICBjb25zdCBhY3RpdmVQYWRkaW5nVG9wID0gdGhpcy5zdGF0ZS5hY3RpdmVQYWRkaW5nVG9wO1xyXG4gICAgICAgIGNvbnN0IHBsYXllcnNBY3RpdmUgPSBhY3RpdmUubWFwKChpdGVtKSA9PiB7XHJcbiAgICAgICAgICAgIGNvbnN0IHtwbGF5ZXJJZCwgc3RhdHVzLCBkaXNwbGF5TmFtZSwgYmV0QW1vdW50LCBjYXNob3V0Rm9ybWF0ZWQsIHdpbkFtb3VudCwgY3VycmVuY3l9ID0gaXRlbTtcclxuICAgICAgICAgICAgcmV0dXJuIChcclxuICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPXsncm93JyArIHN0YXR1c30ga2V5PXtwbGF5ZXJJZH0+XHJcbiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJjb2wxXCI+XHJcbiAgICAgICAgICAgICAgICAgICAgICAgIDxkaXY+e2Rpc3BsYXlOYW1lfTwvZGl2PlxyXG4gICAgICAgICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sMlwiPnt0aGlzLmZvcm1hdEFtb3VudChiZXRBbW91bnQsIGN1cnJlbmN5KX08L2Rpdj5cclxuICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNvbDNcIj57Y2FzaG91dEZvcm1hdGVkfTwvZGl2PlxyXG4gICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sNFwiPnt0aGlzLmZvcm1hdEFtb3VudCh3aW5BbW91bnQsIGN1cnJlbmN5KX08L2Rpdj5cclxuICAgICAgICAgICAgICAgIDwvZGl2PlxyXG4gICAgICAgICAgICApO1xyXG4gICAgICAgIH0pO1xyXG5cclxuICAgICAgICBjb25zdCBjYXNoT3V0ID0gdGhpcy5zdGF0ZS5jYXNoT3V0O1xyXG4gICAgICAgIGNvbnN0IGNhc2hPdXRIZWlnaHQgPSB0aGlzLnN0YXRlLmNhc2hPdXRIZWlnaHQ7XHJcbiAgICAgICAgY29uc3QgY2FzaE91dFBhZGRpbmdUb3AgPSB0aGlzLnN0YXRlLmNhc2hPdXRQYWRkaW5nVG9wO1xyXG4gICAgICAgIGNvbnN0IHBsYXllcnNDYXNoT3V0ID0gY2FzaE91dC5tYXAoKGl0ZW0pID0+IHtcclxuICAgICAgICAgICAgY29uc3Qge3BsYXllcklkLCBzdGF0dXMsIGRpc3BsYXlOYW1lLCBiZXRBbW91bnQsIGNhc2hvdXRGb3JtYXRlZCwgd2luQW1vdW50LCBjdXJyZW5jeX0gPSBpdGVtO1xyXG4gICAgICAgICAgICByZXR1cm4gKFxyXG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9eydyb3cnICsgc3RhdHVzfSBrZXk9e3BsYXllcklkfT5cclxuICAgICAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImNvbDFcIj5cclxuICAgICAgICAgICAgICAgICAgICAgICAgPGRpdj57ZGlzcGxheU5hbWV9PC9kaXY+XHJcbiAgICAgICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJjb2wyXCI+e3RoaXMuZm9ybWF0QW1vdW50KGJldEFtb3VudCwgY3VycmVuY3kpfTwvZGl2PlxyXG4gICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29sM1wiPntjYXNob3V0Rm9ybWF0ZWR9PC9kaXY+XHJcbiAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJjb2w0XCI+e3RoaXMuZm9ybWF0QW1vdW50KHdpbkFtb3VudCwgY3VycmVuY3kpfTwvZGl2PlxyXG4gICAgICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgICAgICk7XHJcbiAgICAgICAgfSk7XHJcblxyXG4gICAgICAgIHJldHVybiAoXHJcbiAgICAgICAgICAgIDxkaXY+XHJcbiAgICAgICAgICAgICAgICA8ZGl2IGlkPVwicGxheWVyc0N1cnJlbnRcIj57cGxheWVyc0N1cnJlbnR9PC9kaXY+XHJcbiAgICAgICAgICAgICAgICA8ZGl2IGlkPVwicGxheWVyc0FjdGl2ZVwiIHN0eWxlPXt7aGVpZ2h0OiBhY3RpdmVIZWlnaHQsIHBhZGRpbmdUb3A6IGFjdGl2ZVBhZGRpbmdUb3B9fT57cGxheWVyc0FjdGl2ZX08L2Rpdj5cclxuICAgICAgICAgICAgICAgIDxkaXYgaWQ9XCJwbGF5ZXJzQ2FzaE91dFwiIHN0eWxlPXt7aGVpZ2h0OiBjYXNoT3V0SGVpZ2h0LCBwYWRkaW5nVG9wOiBjYXNoT3V0UGFkZGluZ1RvcH19PntwbGF5ZXJzQ2FzaE91dH08L2Rpdj5cclxuICAgICAgICAgICAgPC9kaXY+XHJcbiAgICAgICAgKTtcclxuICAgIH07XHJcbn1cclxuXHJcblJlYWN0RE9NLnJlbmRlcig8QXBwLz4sIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdwbGF5ZXJzJykpOyJdfQ==</script></head>
+<body class="es chat-no overflow currency-COP">
+    <form method="post" action="./Board.aspx?Token=1d65f12a-6862-4288-8676-42716c273f47&amp;ReturnUrl=&amp;StopUrl=&amp;Skin=&amp;chat=no" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="m5J3eqhxV5inIZZ5cCvSuvsue1R+i+aygyCi9URuaV2SB8ymq+p1Ke4JlTWe5XZgym9DeAMkQbUp+R/yGWONsq7KeoAzSEsfO68dbvP4YHs=">
+</div>
+
+<script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-VVWHRNZBTC&amp;l=dataLayer&amp;cx=c"></script><script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/JetXNode31/WebResource.axd?d=pynGkmcFUV13He1Qd6_TZEh1eKb4k6lTWWcxqYtPAKUJsjPvey4rPThKucxEVpbU_GfDj-Y5zSmpx8K31kdmEQ2&amp;t=637637882668974205" type="text/javascript"></script>
+
+
+<script src="/JetXNode31/ScriptResource.axd?d=NJmAwtEo3Ipnlaxl6CMhvkax1IeQSsOBow0u2XvQjGcrZL6x23YFRQoitPGin-FG5hSE0c13ncxoq_pSrjtmjOa7qG1pjXx8aHcRvYQrlRfIB3TO85yNJuhJilaQtBnJc0LdSNjiqftjl-aeN8MHiRtwJO-oe-eStgKwzDlY9lE1&amp;t=2fe674eb" type="text/javascript"></script>
+<script src="/JetXNode31/ScriptResource.axd?d=dwY9oWetJoJoVpgL6Zq8OKDfKwVPJkH8r2tryD9orzf4C8AqTFhroKWwVwTorDS94QTXyNv5C9ZykIWvyP515JAuKY2e5Pz6Q_PMM0WuvnPGcu92l38ygTvtysJzT3t2CQ_5Fc2PYeVQsb32MzllmD7cLcCOBvRAf1d4Dp6J15A1&amp;t=2fe674eb" type="text/javascript"></script>
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="60441AC4">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="7ofK3aYhfqNsoMMkMRI6Ax+dksSCSGYq+SD17XwGHjuSNbHQGSqArSrjMLxd4XvD7fZ8PAeCKl8ueJaO6wToVsstbSTaPshUXNauR43FFK0/mo+eps07CjrCsDGAU/oYfvvJogKfmNIMacW6bIxCDHbIhQLgd2GI2yxyu2d3cOBKrocDdB7mcuJQMlwbDfTs">
+</div>
+        <input type="hidden" name="ctl00$GlobalParameters" id="GlobalParameters" value="{&quot;CURRENCYCODE&quot;:&quot;COP&quot;,&quot;MAXBET&quot;:&quot;100000&quot;,&quot;MINBET&quot;:&quot;500&quot;,&quot;MAXWIN&quot;:&quot;10000000&quot;}">
+
+        <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManagetBoardGames', 'form1', ['tctl00$updatepanelbalance','updatepanelbalance'], [], [], 90, 'ctl00');
+//]]>
+</script>
+  
+        <div class="update-panel-balance-content">
+        <div id="updatepanelbalance">
+	
+                <input type="hidden" name="ctl00$balanceBtStyle" id="balanceBtStyle">
+                <input type="hidden" name="ctl00$Version" id="Version" value="v.2.2.0.0">
+                
+                <a id="BtnShowBalance" class="balance-bt" href="javascript:__doPostBack('ctl00$BtnShowBalance','')"></a>
+            
+</div>
+        </div>
+        
+        
+
+        
+    <input autocomplete="off" id="StaticContentUrl" type="hidden" value="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/Sound/">
+
+    <input type="hidden" id="stopUrl" value="">
+    <input type="hidden" id="workerTime" value="1000">
+
+    <div style="position: fixed; left: -100000px; top: -100000px;">
+        <div style="font-family: robotobold;">test</div>
+        <div style="font-family: CrystalUni-Medium;">test</div>
+    </div>
+
+    <header>
+        <div class="content">
+            <div class="logo"></div>
+            <div class="promotion-button"></div>
+            
+            <div class="right"><a class="button help"></a></div>
+            <div class="right">
+                <div class="sound-menu">
+                    <a class="sound-menu-icon"></a>
+                    <div class="sound-menu-popup">
+                        <a class="sound-menu-a sound-all">
+                            <span class="icon"></span>
+                            TODOS
+                            <label class="sound-checkbox">
+                                <input type="checkbox" checked="">
+                                <span></span>
+                            </label>
+                        </a>
+                        <a class="sound-menu-a sound-sound">
+                            <span class="icon"></span>
+                            ხმა
+                            <label class="sound-checkbox">
+                                <input type="checkbox" checked="">
+                                <span></span>
+                            </label>
+                        </a>
+                        <a class="sound-menu-a sound-music">
+                            <span class="icon"></span>
+                            MÚSICA
+                            <label class="sound-checkbox">
+                                <input type="checkbox" checked="">
+                                <span></span>
+                            </label>
+                        </a>
+                    </div>
+                </div>
+                <a class="button sound active none"></a>
+            </div>
+            <div class="right redirect-to-history-parent">
+                <a id="redirect-to-history" class="button redirect-to-history"></a>
+            </div>
+            <div class="right" id="balance">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 865.22 853.2">
+                    <defs><style>.cls-1{fill:#fddf56;}</style></defs>
+                    <path class="cls-1" d="M520.87,959.44c-58.13,0-112.94-12.67-154.34-35.67-43.36-24.08-67.24-56.8-67.24-92.12V761.31a10.56,10.56,0,0,1,21.11,0v70.34c0,27.31,20,53.48,56.38,73.68,38.31,21.29,89.49,33,144.09,33q3.15,0,6.27-.05h.18a10.56,10.56,0,0,1,.17,21.11C525.29,959.42,523.09,959.44,520.87,959.44Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M731.9,797.73a10.55,10.55,0,0,1-10.55-10.55V701a10.55,10.55,0,0,1,21.1,0v86.17A10.55,10.55,0,0,1,731.9,797.73Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M520.87,893.79c-58.13,0-112.94-12.67-154.34-35.67C323.17,834,299.29,801.32,299.29,766V695.66a10.56,10.56,0,1,1,21.11,0V766c0,27.31,20,53.47,56.38,73.67,38.31,21.29,89.49,33,144.09,33,1.86,0,3.71,0,5.56,0a10.56,10.56,0,0,1,.29,21.11C524.78,893.77,522.83,893.79,520.87,893.79Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M731.9,797.65a10.55,10.55,0,0,1-10.55-10.55V695.66a10.55,10.55,0,1,1,21.1,0V787.1A10.55,10.55,0,0,1,731.9,797.65Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M520.87,828.14c-58.13,0-112.94-12.67-154.34-35.67-43.36-24.09-67.24-56.81-67.24-92.13V630a10.56,10.56,0,0,1,21.11,0v70.34c0,27.32,20,53.48,56.38,73.68,38.31,21.29,89.49,33,144.09,33S626.65,795.31,665,774c36.36-20.2,56.38-46.36,56.38-73.68V630a10.55,10.55,0,0,1,21.1,0v70.34c0,35.32-23.87,68-67.23,92.13C633.82,815.47,579,828.14,520.87,828.14Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M520.87,762.48c-58.13,0-112.94-12.67-154.34-35.66-43.36-24.09-67.24-56.81-67.24-92.13s23.88-68,67.24-92.12c41.4-23,96.21-35.67,154.34-35.67s113,12.67,154.35,35.67c43.36,24.09,67.23,56.8,67.23,92.12s-23.87,68-67.23,92.13C633.82,749.81,579,762.48,520.87,762.48Zm0-234.48c-54.6,0-105.78,11.73-144.09,33-36.36,20.2-56.38,46.37-56.38,73.68s20,53.48,56.38,73.68c38.31,21.28,89.49,33,144.09,33s105.78-11.73,144.1-33c36.36-20.2,56.38-46.37,56.38-73.68S701.33,581.21,665,561C626.65,539.73,575.48,528,520.87,528Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M731.9,797.73a10.55,10.55,0,0,1-10.55-10.55V701a10.55,10.55,0,0,1,21.1,0v86.17A10.55,10.55,0,0,1,731.9,797.73Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M945.57,966.14A10.56,10.56,0,0,1,945.5,945c54.06-.37,104.61-12.25,142.34-33.46,35.83-20.13,55.57-46.14,55.57-73.22V768a10.55,10.55,0,0,1,21.1,0v70.34c0,70.82-96.14,126.95-218.87,127.78Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M731.9,804.36a10.56,10.56,0,0,1-10.55-10.56V702.36a10.55,10.55,0,0,1,21.1,0V793.8A10.55,10.55,0,0,1,731.9,804.36Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M942.93,900.49a10.55,10.55,0,0,1,0-21.1c54.6,0,105.78-11.73,144.1-33,36.35-20.2,56.38-46.37,56.38-73.68V702.36a10.55,10.55,0,0,1,21.1,0V772.7c0,35.32-23.88,68-67.24,92.12C1055.87,887.82,1001.06,900.49,942.93,900.49Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M942.93,834.84c-58.13,0-112.94-12.67-154.34-35.67-43.36-24.09-67.24-56.8-67.24-92.12V636.71a10.55,10.55,0,1,1,21.1,0v70.34c0,27.31,20,53.47,56.39,73.68,38.31,21.28,89.49,33,144.09,33s105.78-11.72,144.1-33c36.35-20.21,56.38-46.37,56.38-73.68V636.71a10.55,10.55,0,1,1,21.1,0v70.34c0,35.32-23.88,68-67.24,92.12C1055.87,822.17,1001.06,834.84,942.93,834.84Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M942.93,769.19c-58.13,0-112.94-12.67-154.34-35.67-43.36-24.09-67.24-56.81-67.24-92.12V571.05a10.55,10.55,0,0,1,21.1,0V641.4c0,27.31,20,53.47,56.39,73.67,38.31,21.29,89.49,33,144.09,33s105.78-11.72,144.1-33c36.35-20.2,56.38-46.36,56.38-73.67V571.05a10.55,10.55,0,0,1,21.1,0V641.4c0,35.31-23.88,68-67.24,92.12C1055.87,756.52,1001.06,769.19,942.93,769.19Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M942.93,703.53c-58.13,0-112.94-12.67-154.34-35.67-43.36-24.08-67.24-56.8-67.24-92.12V505.4a10.55,10.55,0,0,1,21.1,0v70.34c0,27.31,20,53.48,56.39,73.68,38.31,21.28,89.49,33,144.09,33s105.78-11.73,144.1-33c36.35-20.2,56.38-46.37,56.38-73.68V505.4a10.55,10.55,0,0,1,21.1,0v70.34c0,35.32-23.88,68-67.24,92.12C1055.87,690.86,1001.06,703.53,942.93,703.53Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M942.93,637.88c-58.13,0-112.94-12.67-154.34-35.67-43.36-24.09-67.24-56.8-67.24-92.12V439.74a10.55,10.55,0,0,1,21.1,0v70.35c0,27.31,20,53.47,56.39,73.67,38.31,21.29,89.49,33,144.09,33s105.78-11.72,144.1-33c36.35-20.19,56.38-46.36,56.38-73.67V439.74a10.55,10.55,0,0,1,21.1,0v70.35c0,35.32-23.88,68-67.24,92.12C1055.87,625.21,1001.06,637.88,942.93,637.88Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M942.93,572.22c-58.13,0-112.94-12.66-154.34-35.66-43.36-24.09-67.24-56.81-67.24-92.13s23.88-68,67.24-92.12c41.4-23,96.21-35.66,154.34-35.66s112.94,12.66,154.34,35.66c43.36,24.09,67.24,56.81,67.24,92.12s-23.88,68-67.24,92.13C1055.87,559.56,1001.06,572.22,942.93,572.22Zm0-234.47c-54.6,0-105.78,11.72-144.09,33-36.36,20.2-56.39,46.36-56.39,73.67s20,53.48,56.39,73.68c38.31,21.29,89.49,33,144.09,33s105.78-11.72,144.1-33c36.35-20.2,56.38-46.36,56.38-73.68s-20-53.47-56.38-73.67C1048.71,349.47,997.53,337.75,942.93,337.75Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M734.54,1169.85c-58.13,0-112.95-12.67-154.34-35.67-43.36-24.09-67.24-56.8-67.24-92.12V971.71a10.55,10.55,0,1,1,21.1,0v70.35c0,27.31,20,53.47,56.38,73.67,38.32,21.29,89.5,33,144.1,33s105.78-11.72,144.09-33c36.36-20.2,56.39-46.36,56.39-73.67V971.71a10.55,10.55,0,1,1,21.1,0v70.35c0,35.32-23.88,68-67.24,92.12C847.48,1157.18,792.67,1169.85,734.54,1169.85Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M734.54,1104.19c-58.13,0-112.95-12.66-154.34-35.66C536.84,1044.44,513,1011.72,513,976.4V906.06a10.55,10.55,0,0,1,21.1,0V976.4c0,27.32,20,53.48,56.38,73.68,38.32,21.29,89.5,33,144.1,33s105.78-11.72,144.09-33C915,1029.88,935,1003.72,935,976.4V906.06a10.55,10.55,0,0,1,21.1,0V976.4c0,35.32-23.88,68-67.24,92.13C847.48,1091.53,792.67,1104.19,734.54,1104.19Z" transform="translate(-299.29 -316.65)"></path><path class="cls-1" d="M734.54,1038.54c-58.13,0-112.95-12.67-154.34-35.67C536.84,978.79,513,946.07,513,910.75s23.88-68,67.24-92.12c41.39-23,96.21-35.67,154.34-35.67s112.94,12.67,154.34,35.67c43.36,24.08,67.24,56.8,67.24,92.12s-23.88,68-67.24,92.12C847.48,1025.87,792.67,1038.54,734.54,1038.54Zm0-234.47c-54.61,0-105.78,11.72-144.1,33-36.35,20.2-56.38,46.37-56.38,73.68s20,53.48,56.38,73.68c38.32,21.28,89.5,33,144.1,33s105.78-11.73,144.09-33C915,964.23,935,938.06,935,910.75s-20-53.48-56.39-73.68C840.32,815.79,789.14,804.07,734.54,804.07Z" transform="translate(-299.29 -316.65)"></path>
+                </svg>
+                Saldo
+                <span class="value" id="availableAmount">18<span class="currency">COP</span></span>
+            </div>
+
+            <div class="right">
+                <a class="user">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px">
+                        <path fill-rule="evenodd" fill="rgb(250, 226, 82)" d="M22.000,11.000 C22.000,4.935 17.065,-0.000 11.000,-0.000 C4.935,-0.000 -0.000,4.935 -0.000,11.000 C-0.000,14.204 1.377,17.091 3.570,19.103 L3.560,19.112 L3.917,19.413 C3.940,19.433 3.965,19.449 3.988,19.468 C4.178,19.625 4.374,19.774 4.574,19.919 C4.639,19.966 4.704,20.012 4.770,20.058 C4.983,20.205 5.203,20.345 5.427,20.477 C5.475,20.506 5.525,20.534 5.574,20.562 C5.819,20.702 6.069,20.833 6.326,20.954 C6.345,20.963 6.364,20.971 6.383,20.980 C7.218,21.368 8.110,21.653 9.043,21.822 C9.067,21.826 9.092,21.830 9.117,21.835 C9.406,21.885 9.699,21.925 9.995,21.952 C10.031,21.955 10.067,21.957 10.104,21.960 C10.399,21.984 10.697,22.000 11.000,22.000 C11.299,22.000 11.595,21.984 11.889,21.961 C11.926,21.958 11.963,21.956 12.000,21.952 C12.294,21.926 12.585,21.887 12.871,21.838 C12.896,21.833 12.921,21.829 12.946,21.824 C13.865,21.659 14.744,21.380 15.569,21.002 C15.599,20.988 15.630,20.975 15.661,20.960 C15.907,20.844 16.149,20.719 16.385,20.586 C16.444,20.553 16.502,20.519 16.561,20.485 C16.776,20.358 16.987,20.226 17.193,20.085 C17.267,20.034 17.339,19.981 17.413,19.928 C17.588,19.802 17.761,19.672 17.928,19.535 C17.965,19.505 18.005,19.479 18.042,19.448 L18.408,19.143 L18.397,19.134 C20.609,17.121 22.000,14.220 22.000,11.000 ZM0.800,11.000 C0.800,5.376 5.375,0.800 11.000,0.800 C16.624,0.800 21.200,5.376 21.200,11.000 C21.200,14.031 19.870,16.756 17.764,18.625 C17.647,18.544 17.528,18.471 17.407,18.410 L14.020,16.717 C13.716,16.565 13.527,16.260 13.527,15.920 L13.527,14.737 C13.606,14.640 13.689,14.531 13.774,14.410 C14.213,13.791 14.564,13.102 14.821,12.361 C15.327,12.120 15.655,11.616 15.655,11.046 L15.655,9.628 C15.655,9.281 15.527,8.944 15.300,8.680 L15.300,6.813 C15.321,6.606 15.394,5.434 14.547,4.468 C13.809,3.626 12.616,3.200 11.000,3.200 C9.383,3.200 8.190,3.626 7.453,4.467 C6.605,5.434 6.679,6.605 6.700,6.813 L6.700,8.680 C6.473,8.944 6.345,9.280 6.345,9.627 L6.345,11.045 C6.345,11.486 6.543,11.896 6.881,12.174 C7.205,13.443 7.872,14.403 8.118,14.729 L8.118,15.887 C8.118,16.213 7.940,16.513 7.653,16.670 L4.491,18.395 C4.390,18.450 4.290,18.514 4.190,18.586 C2.110,16.717 0.800,14.009 0.800,11.000 ZM16.983,19.253 C16.843,19.354 16.701,19.453 16.557,19.547 C16.490,19.590 16.424,19.633 16.357,19.675 C16.168,19.792 15.976,19.903 15.780,20.007 C15.737,20.030 15.693,20.052 15.649,20.074 C15.199,20.305 14.733,20.503 14.254,20.664 C14.237,20.670 14.221,20.676 14.203,20.682 C13.953,20.765 13.699,20.839 13.442,20.902 C13.441,20.902 13.440,20.903 13.439,20.903 C13.180,20.967 12.918,21.020 12.654,21.064 C12.647,21.065 12.639,21.066 12.632,21.068 C12.384,21.108 12.133,21.137 11.882,21.159 C11.838,21.163 11.793,21.166 11.749,21.169 C11.500,21.188 11.251,21.200 11.000,21.200 C10.746,21.200 10.493,21.188 10.242,21.169 C10.198,21.166 10.155,21.163 10.111,21.159 C9.858,21.136 9.605,21.106 9.355,21.066 C9.344,21.064 9.333,21.062 9.322,21.060 C8.793,20.971 8.273,20.841 7.766,20.671 C7.750,20.666 7.734,20.660 7.719,20.655 C7.467,20.570 7.218,20.475 6.974,20.370 C6.972,20.369 6.970,20.368 6.969,20.368 C6.737,20.268 6.511,20.158 6.287,20.041 C6.257,20.026 6.228,20.012 6.199,19.996 C5.995,19.887 5.795,19.769 5.597,19.646 C5.539,19.609 5.481,19.572 5.423,19.534 C5.242,19.415 5.063,19.292 4.888,19.161 C4.870,19.147 4.853,19.133 4.835,19.119 C4.848,19.112 4.861,19.105 4.873,19.098 L8.036,17.372 C8.580,17.076 8.918,16.506 8.918,15.887 L8.918,14.446 L8.826,14.335 C8.817,14.325 7.952,13.273 7.625,11.848 L7.589,11.690 L7.453,11.602 C7.260,11.477 7.145,11.269 7.145,11.045 L7.145,9.627 C7.145,9.441 7.224,9.268 7.368,9.138 L7.500,9.018 L7.500,6.790 L7.496,6.738 C7.495,6.728 7.377,5.766 8.055,4.994 C8.633,4.335 9.624,4.000 11.000,4.000 C12.370,4.000 13.358,4.332 13.938,4.986 C14.615,5.751 14.504,6.731 14.503,6.739 L14.500,9.019 L14.632,9.138 C14.775,9.268 14.855,9.442 14.855,9.628 L14.855,11.046 C14.855,11.331 14.661,11.590 14.382,11.676 L14.183,11.737 L14.119,11.935 C13.883,12.668 13.547,13.345 13.121,13.948 C13.016,14.096 12.914,14.227 12.827,14.327 L12.727,14.440 L12.727,15.920 C12.727,16.565 13.086,17.145 13.663,17.433 L17.049,19.126 C17.071,19.137 17.092,19.148 17.113,19.159 C17.071,19.192 17.027,19.222 16.983,19.253 Z"></path>
+                    </svg>
+                    <span id="displayName">BPL_5444761</span>
+                </a>
+            </div>
+            <div class="right promotion-dailyleaderboard-button">
+
+            </div>
+            <div class="right promotion-wheel-button"></div>
+            <div class="right stop-button-div">
+                <a class="stop-button" target="_top">PARAR</a>
+            </div>
+            <div class="right none"><div id="game-id" class="deal-number"></div></div>
+
+            <div class="jackpot">
+                <div style="width: 215.906px;">
+                    <iframe frameborder="0" scrolling="no" id="jackpotCounter" src=""></iframe>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="game" class="game-started">
+        <div class="content">
+            <aside id="left">
+                <div class="history" id="last100Spins"><div id="E9B293BB66BDF5209C390ABB5FA9BF514159677E74062BFC62AF7509353F0C4D" data-info="{&quot;SpinTime&quot;:&quot;JUEGO ACTUAL&quot;,&quot;Coefficient&quot;:&quot;EN JUEGO&quot;,&quot;SpinHash&quot;:&quot;E9B293BB66BDF5209C390ABB5FA9BF514159677E74062BFC62AF7509353F0C4D&quot;,&quot;Info&quot;:&quot;ESPERANDO&quot;}" class="row current">4.67</div><div id="DE354B84A1B6068EC70CC00C3BB4C075C79DBF742F7B0A8998E4243A5749E5B3" data-info="{&quot;Coefficient&quot;:4.41,&quot;SpinHash&quot;:&quot;DE354B84A1B6068EC70CC00C3BB4C075C79DBF742F7B0A8998E4243A5749E5B3&quot;,&quot;Info&quot;:&quot;4.41_df8851ce-4568-46d2-a072-48db8b6cdff4&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:19:25.8516174+00:00&quot;}" class="row win">4.41</div><div id="7442E92D703D9003D9823E361F5C7949CBEE2ACEF06219DDAAA3E7BBEE481C00" data-info="{&quot;Coefficient&quot;:3.27,&quot;SpinHash&quot;:&quot;7442E92D703D9003D9823E361F5C7949CBEE2ACEF06219DDAAA3E7BBEE481C00&quot;,&quot;Info&quot;:&quot;3.27_95e0b3c2-2005-412e-bdb4-b29d0c064cb8&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:19:02.5704179+00:00&quot;}" class="row win">3.27</div><div id="D70BEF4E21B35B30FF91A0F6A72E033E8727D2C0BE29BD0C3DCCD8A684E2AB69" data-info="{&quot;Coefficient&quot;:1.51,&quot;SpinHash&quot;:&quot;D70BEF4E21B35B30FF91A0F6A72E033E8727D2C0BE29BD0C3DCCD8A684E2AB69&quot;,&quot;Info&quot;:&quot;1.51_c230e6fd-74f7-4630-9d5c-1bcde98e2b53&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:18:48.4454483+00:00&quot;}" class="row win">1.51</div><div id="436B0144F042749D99894CC33C26A27B2F3C6FD6BB8C9A389DBD31718BEC75F5" data-info="{&quot;Coefficient&quot;:2.42,&quot;SpinHash&quot;:&quot;436B0144F042749D99894CC33C26A27B2F3C6FD6BB8C9A389DBD31718BEC75F5&quot;,&quot;Info&quot;:&quot;2.42_f6d719f5-6bad-45cf-b34b-6a69f821b847&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:18:29.3673598+00:00&quot;}" class="row win">2.42</div><div id="E6D3FF18F4B8E38E78B914D5765FEC2BB30F9BEEDC8510B4EB5513A7750FE6FF" data-info="{&quot;Coefficient&quot;:2.91,&quot;SpinHash&quot;:&quot;E6D3FF18F4B8E38E78B914D5765FEC2BB30F9BEEDC8510B4EB5513A7750FE6FF&quot;,&quot;Info&quot;:&quot;2.91_197fe540-5611-47e9-9c22-4f1596343500&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:18:08.2424132+00:00&quot;}" class="row win">2.91</div><div id="C8CFB7AFFBE5AA589D0C5E0687C2DA5FEE578D51688433F652C5D3575586CE52" data-info="{&quot;Coefficient&quot;:1,&quot;SpinHash&quot;:&quot;C8CFB7AFFBE5AA589D0C5E0687C2DA5FEE578D51688433F652C5D3575586CE52&quot;,&quot;Info&quot;:&quot;1_505e5eee-9ce1-4a90-aaab-e663a0c4b11d&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:17:59.1018081+00:00&quot;}" class="row lose">1.00</div><div id="F3EF33C9329FBA1EFD78657177A61189CD259D01AC7849944E508D49D1A2F1AD" data-info="{&quot;Coefficient&quot;:1.44,&quot;SpinHash&quot;:&quot;F3EF33C9329FBA1EFD78657177A61189CD259D01AC7849944E508D49D1A2F1AD&quot;,&quot;Info&quot;:&quot;1.44_c8dc9537-883b-459c-9d39-5584a90cdd11&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:17:46.0080699+00:00&quot;}" class="row lose">1.44</div><div id="D4039BC40DC7742C060D7DE858A0EB6008D8976D3B02F4FFDAFE25A5E2AB4C11" data-info="{&quot;Coefficient&quot;:1.22,&quot;SpinHash&quot;:&quot;D4039BC40DC7742C060D7DE858A0EB6008D8976D3B02F4FFDAFE25A5E2AB4C11&quot;,&quot;Info&quot;:&quot;1.22_dd803234-d5a5-4cf8-bdd9-640abd47a440&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:17:34.7737137+00:00&quot;}" class="row lose">1.22</div><div id="33E309B5A2B570F7AA6078B97E73CD7C46F5DA0489345952A198F6F26B0BAAA1" data-info="{&quot;Coefficient&quot;:1.92,&quot;SpinHash&quot;:&quot;33E309B5A2B570F7AA6078B97E73CD7C46F5DA0489345952A198F6F26B0BAAA1&quot;,&quot;Info&quot;:&quot;1.92_2cf02d64-d4d5-42d5-bc12-04a0d5d5c494&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:17:18.5393711+00:00&quot;}" class="row win">1.92</div><div id="B893D0871A3CBA6827C6ED37965C400C543156332C62ECD7825CD1B5FDC25043" data-info="{&quot;Coefficient&quot;:1.64,&quot;SpinHash&quot;:&quot;B893D0871A3CBA6827C6ED37965C400C543156332C62ECD7825CD1B5FDC25043&quot;,&quot;Info&quot;:&quot;1.64_0892e6ee-650e-4003-a129-4c1061635929&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:17:04.4143988+00:00&quot;}" class="row win">1.64</div><div id="F3722A6A2EA22D4A5A5A8828E6F6A0A4CEADECD91D4238AAA12AA583D27746F1" data-info="{&quot;Coefficient&quot;:2.19,&quot;SpinHash&quot;:&quot;F3722A6A2EA22D4A5A5A8828E6F6A0A4CEADECD91D4238AAA12AA583D27746F1&quot;,&quot;Info&quot;:&quot;2.19_ecc5a2b2-ad1d-4270-89a9-0088bf494261&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:16:46.226946+00:00&quot;}" class="row win">2.19</div><div id="439E66560BF775EA7DFC3CC6054343503F6F549DAFC4489F7F0639DDA271BD21" data-info="{&quot;Coefficient&quot;:2.49,&quot;SpinHash&quot;:&quot;439E66560BF775EA7DFC3CC6054343503F6F549DAFC4489F7F0639DDA271BD21&quot;,&quot;Info&quot;:&quot;2.49_0a211a6b-8954-473a-a01a-caf0bc6481f7&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:16:26.9926218+00:00&quot;}" class="row win">2.49</div><div id="37D2899703314F4811717481691C4FA450B53BEB5CC66C45B86C054B5ED78F61" data-info="{&quot;Coefficient&quot;:10.11,&quot;SpinHash&quot;:&quot;37D2899703314F4811717481691C4FA450B53BEB5CC66C45B86C054B5ED78F61&quot;,&quot;Info&quot;:&quot;10.11_c18eb091-134e-462f-949b-7a675376dcab&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:15:50.7739658+00:00&quot;}" class="row win">10.11</div><div id="45518F604B91C78C2E6E2EFBA9B2E71ECC65BC3DE245DC7A4A5B06E2BAA9A903" data-info="{&quot;Coefficient&quot;:2.6,&quot;SpinHash&quot;:&quot;45518F604B91C78C2E6E2EFBA9B2E71ECC65BC3DE245DC7A4A5B06E2BAA9A903&quot;,&quot;Info&quot;:&quot;2.6_bfe50c29-1b34-4dbf-8ae2-6cdc09bd7d2c&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:15:30.6802651+00:00&quot;}" class="row win">2.60</div><div id="44E9F199590705161DD022303FD29E9E8C67CADDD8106A5AB4C911BCD0A5D191" data-info="{&quot;Coefficient&quot;:1,&quot;SpinHash&quot;:&quot;44E9F199590705161DD022303FD29E9E8C67CADDD8106A5AB4C911BCD0A5D191&quot;,&quot;Info&quot;:&quot;1_032d5854-06b4-4cbd-907f-16994445823d&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:15:21.5396632+00:00&quot;}" class="row lose">1.00</div><div id="506A0A51AD7BBF53B60A48E657C335D2B4B2818D4B38F7E31C374F8FC19DE809" data-info="{&quot;Coefficient&quot;:3.61,&quot;SpinHash&quot;:&quot;506A0A51AD7BBF53B60A48E657C335D2B4B2818D4B38F7E31C374F8FC19DE809&quot;,&quot;Info&quot;:&quot;3.61_a5714701-83b3-4108-b91d-3f4c63ecc97c&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:14:57.3522225+00:00&quot;}" class="row win">3.61</div><div id="6341F3CB9DDFA95EFB8C0E6178898431D7BB6E6770386678E6CB5CC36DBD92AC" data-info="{&quot;Coefficient&quot;:1.05,&quot;SpinHash&quot;:&quot;6341F3CB9DDFA95EFB8C0E6178898431D7BB6E6770386678E6CB5CC36DBD92AC&quot;,&quot;Info&quot;:&quot;1.05_7119be99-7388-4fa9-9202-2b9fb834e01b&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:14:48.3053555+00:00&quot;}" class="row lose">1.05</div><div id="4F4F98131AF918C6BBD955D5B3670733DD88A61EC825154205BD008285D3ADA9" data-info="{&quot;Coefficient&quot;:3.36,&quot;SpinHash&quot;:&quot;4F4F98131AF918C6BBD955D5B3670733DD88A61EC825154205BD008285D3ADA9&quot;,&quot;Info&quot;:&quot;3.36_267ee0d8-7cbe-468f-9e35-976f94248ef4&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:14:25.0866659+00:00&quot;}" class="row win">3.36</div><div id="D94D8BDD6FD401E799359BB52D6E246920112927241F5E8A47C29783E704DFAB" data-info="{&quot;Coefficient&quot;:4.54,&quot;SpinHash&quot;:&quot;D94D8BDD6FD401E799359BB52D6E246920112927241F5E8A47C29783E704DFAB&quot;,&quot;Info&quot;:&quot;4.54_0359ca00-a7fd-4e4c-80fc-d57c7e895077&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:13:58.6961104+00:00&quot;}" class="row win">4.54</div><div id="FA32A349E0668F7EC8889F768955EF3A426F488AF3B0B07B00A7EFD0DD46AE81" data-info="{&quot;Coefficient&quot;:1.64,&quot;SpinHash&quot;:&quot;FA32A349E0668F7EC8889F768955EF3A426F488AF3B0B07B00A7EFD0DD46AE81&quot;,&quot;Info&quot;:&quot;1.64_b570027e-9057-4e96-af1b-6aff6454e2c1&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:13:44.7273998+00:00&quot;}" class="row win">1.64</div><div id="90C9CD98748C733DE7A6BB408F3661439D18B771F0617F3DAD3411ED9C9B0252" data-info="{&quot;Coefficient&quot;:10.11,&quot;SpinHash&quot;:&quot;90C9CD98748C733DE7A6BB408F3661439D18B771F0617F3DAD3411ED9C9B0252&quot;,&quot;Info&quot;:&quot;10.11_16926bb7-6d60-41a3-83db-94025dea6c5f&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:13:08.2431191+00:00&quot;}" class="row win">10.11</div><div id="19F5C6D58BEBE92383541965E931F2D0E40CE6DE9BE05F4688B0962546AC3D00" data-info="{&quot;Coefficient&quot;:1.69,&quot;SpinHash&quot;:&quot;19F5C6D58BEBE92383541965E931F2D0E40CE6DE9BE05F4688B0962546AC3D00&quot;,&quot;Info&quot;:&quot;1.69_080120bb-aed2-4991-9db4-4c437a738988&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:12:53.1025338+00:00&quot;}" class="row win">1.69</div><div id="6DD10045BFBE6379858BB62A59397BB2A9898EFD0851922DB0172E73F4713A89" data-info="{&quot;Coefficient&quot;:1.57,&quot;SpinHash&quot;:&quot;6DD10045BFBE6379858BB62A59397BB2A9898EFD0851922DB0172E73F4713A89&quot;,&quot;Info&quot;:&quot;1.57_566cbfea-b55f-4f46-a11b-fe1d7cc5793b&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:12:39.1338164+00:00&quot;}" class="row win">1.57</div><div id="44D1708925AAA34B8D82223AC5AFFE7CDD693EFAA745E577977A93C3D089D566" data-info="{&quot;Coefficient&quot;:2.49,&quot;SpinHash&quot;:&quot;44D1708925AAA34B8D82223AC5AFFE7CDD693EFAA745E577977A93C3D089D566&quot;,&quot;Info&quot;:&quot;2.49_344667f6-13fc-462b-b2c7-b5e41eebfd06&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:12:19.8994949+00:00&quot;}" class="row win">2.49</div><div id="FA3A4E7F7DA9956CFE87E5FB4EA3B7EE616A9C189AA5C1A65E94884591632750" data-info="{&quot;Coefficient&quot;:1.38,&quot;SpinHash&quot;:&quot;FA3A4E7F7DA9956CFE87E5FB4EA3B7EE616A9C189AA5C1A65E94884591632750&quot;,&quot;Info&quot;:&quot;1.38_8ab321e1-e3b5-4f5f-ae08-cf5a4720923a&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:12:06.8370289+00:00&quot;}" class="row lose">1.38</div><div id="AC94C5C9298AEB31A0B8A22EB3684EE78BE92DDB3C13F6C7DC6FB5109FE16086" data-info="{&quot;Coefficient&quot;:1.23,&quot;SpinHash&quot;:&quot;AC94C5C9298AEB31A0B8A22EB3684EE78BE92DDB3C13F6C7DC6FB5109FE16086&quot;,&quot;Info&quot;:&quot;1.23_fc28267f-7e67-4fe5-8ce4-8d99d18c9958&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:11:55.8370634+00:00&quot;}" class="row lose">1.23</div><div id="C9C5887DC3F10313EADE3F8236796330E15A5E5BFA8E5BF243386AED5A74952D" data-info="{&quot;Coefficient&quot;:2.07,&quot;SpinHash&quot;:&quot;C9C5887DC3F10313EADE3F8236796330E15A5E5BFA8E5BF243386AED5A74952D&quot;,&quot;Info&quot;:&quot;2.07_a68759b8-b243-42bb-8228-929a6181d1f2&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:11:38.5245975+00:00&quot;}" class="row win">2.07</div><div id="A82002610BDB0811CE8A9DC9631E37E4EADD4477BB9A5C98900F30697CB4D85E" data-info="{&quot;Coefficient&quot;:1.25,&quot;SpinHash&quot;:&quot;A82002610BDB0811CE8A9DC9631E37E4EADD4477BB9A5C98900F30697CB4D85E&quot;,&quot;Info&quot;:&quot;1.25_e98d430c-fb6b-4809-9799-5664057f29e0&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:11:27.3840085+00:00&quot;}" class="row lose">1.25</div><div id="6F3FF4F6E40F7E201CC113F93D7422B73DF6B83E7C43C175769D368C77CBEE4C" data-info="{&quot;Coefficient&quot;:2.91,&quot;SpinHash&quot;:&quot;6F3FF4F6E40F7E201CC113F93D7422B73DF6B83E7C43C175769D368C77CBEE4C&quot;,&quot;Info&quot;:&quot;2.91_fc55cbda-7eab-4641-8c06-11b6b9b00978&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:11:06.3996833+00:00&quot;}" class="row win">2.91</div><div id="531EC40B341FCA4810D1592BC875243F47AEE134ED4B996D34B6F701F6FC29CA" data-info="{&quot;Coefficient&quot;:2.25,&quot;SpinHash&quot;:&quot;531EC40B341FCA4810D1592BC875243F47AEE134ED4B996D34B6F701F6FC29CA&quot;,&quot;Info&quot;:&quot;2.25_947da4c6-3404-4041-8005-e2943bd32f47&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:10:48.0872298+00:00&quot;}" class="row win">2.25</div><div id="301D50C0932C66E4F4C51789569E64A94D9FC9E2450501D81B8BCE0F159E89FA" data-info="{&quot;Coefficient&quot;:1,&quot;SpinHash&quot;:&quot;301D50C0932C66E4F4C51789569E64A94D9FC9E2450501D81B8BCE0F159E89FA&quot;,&quot;Info&quot;:&quot;1_1ba1c1be-75dc-4706-a981-4d8a2bda3467&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:10:38.8997509+00:00&quot;}" class="row lose">1.00</div><div id="030F7B39DDE1460A14E5EDB88E0B8D77D9F0CE0BB55383D7E91F1F6482E12A82" data-info="{&quot;Coefficient&quot;:1.84,&quot;SpinHash&quot;:&quot;030F7B39DDE1460A14E5EDB88E0B8D77D9F0CE0BB55383D7E91F1F6482E12A82&quot;,&quot;Info&quot;:&quot;1.84_d11db807-1b46-4373-bca2-0ff22b108967&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:10:22.899795+00:00&quot;}" class="row win">1.84</div><div id="D3E94F74556F66CB8873842EDE98FA5619C06CFED80AF92ADFD20205B2655ABB" data-info="{&quot;Coefficient&quot;:1.27,&quot;SpinHash&quot;:&quot;D3E94F74556F66CB8873842EDE98FA5619C06CFED80AF92ADFD20205B2655ABB&quot;,&quot;Info&quot;:&quot;1.27_7042b599-25ba-4ac5-b249-569f976849da&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:10:11.6654455+00:00&quot;}" class="row lose">1.27</div><div id="7B057EA8AA8FFF5D8EF4B068212D5395D1F7855569FC1519BF26926CE1644CB5" data-info="{&quot;Coefficient&quot;:6.78,&quot;SpinHash&quot;:&quot;7B057EA8AA8FFF5D8EF4B068212D5395D1F7855569FC1519BF26926CE1644CB5&quot;,&quot;Info&quot;:&quot;6.78_1f357a78-b327-4dda-9d49-300f94a7fce6&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:09:40.4936519+00:00&quot;}" class="row win">6.78</div><div id="A7B7B318A7FEC7E24AA6F85E679F0936464D74E85C4205FC2A8C1B4FDB8E8152" data-info="{&quot;Coefficient&quot;:4.41,&quot;SpinHash&quot;:&quot;A7B7B318A7FEC7E24AA6F85E679F0936464D74E85C4205FC2A8C1B4FDB8E8152&quot;,&quot;Info&quot;:&quot;4.41_e91a8d75-6539-4b34-ae87-5923a2b5e52c&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:09:14.1812197+00:00&quot;}" class="row win">4.41</div><div id="D8C9DA7C7C2AF9968A6EB9C086449FCEEA64F87A62EC655133A701B06A02EA92" data-info="{&quot;Coefficient&quot;:1.04,&quot;SpinHash&quot;:&quot;D8C9DA7C7C2AF9968A6EB9C086449FCEEA64F87A62EC655133A701B06A02EA92&quot;,&quot;Info&quot;:&quot;1.04_09700f40-8ea5-43c4-8861-222b9e70efcd&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:09:05.2749959+00:00&quot;}" class="row lose">1.04</div><div id="7F1C4DE431B66270C7C5B46BAE92730CC10C5B587A28FA8C953E8BBEF334014E" data-info="{&quot;Coefficient&quot;:85.01,&quot;SpinHash&quot;:&quot;7F1C4DE431B66270C7C5B46BAE92730CC10C5B587A28FA8C953E8BBEF334014E&quot;,&quot;Info&quot;:&quot;85.01_c27db54c-d75d-4721-9f84-4b30a1bbcac9&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:08:04.6032752+00:00&quot;}" class="row win">85.01</div><div id="E3843248454609A43869E1CF0FCD2A7FE4BB8C0B4F0375CF495702DC63507883" data-info="{&quot;Coefficient&quot;:1.62,&quot;SpinHash&quot;:&quot;E3843248454609A43869E1CF0FCD2A7FE4BB8C0B4F0375CF495702DC63507883&quot;,&quot;Info&quot;:&quot;1.62_d2391286-891c-451d-8ca6-16471d40b452&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:07:50.4939375+00:00&quot;}" class="row win">1.62</div><div id="15F9A5C7495381B09F1A7DE4EF53A36A321DEF45F609EAA3A9BF8BEA45978EE3" data-info="{&quot;Coefficient&quot;:1.05,&quot;SpinHash&quot;:&quot;15F9A5C7495381B09F1A7DE4EF53A36A321DEF45F609EAA3A9BF8BEA45978EE3&quot;,&quot;Info&quot;:&quot;1.05_72fb5a73-0938-4206-aad8-b0c3b99f7646&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:07:41.4470912+00:00&quot;}" class="row lose">1.05</div><div id="4EBAF4DC3BAD685217780059D3ECD9AE918A75078CF384C8A9C174A5EBD2B144" data-info="{&quot;Coefficient&quot;:3.36,&quot;SpinHash&quot;:&quot;4EBAF4DC3BAD685217780059D3ECD9AE918A75078CF384C8A9C174A5EBD2B144&quot;,&quot;Info&quot;:&quot;3.36_f5f5defe-1df4-4cc0-b445-4ff1e3f5df36&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:07:18.134644+00:00&quot;}" class="row win">3.36</div><div id="C4D1359023646AAAC8D1E3AEBF55D0522E855C510126F84E9F1A4F4E8718872D" data-info="{&quot;Coefficient&quot;:1.12,&quot;SpinHash&quot;:&quot;C4D1359023646AAAC8D1E3AEBF55D0522E855C510126F84E9F1A4F4E8718872D&quot;,&quot;Info&quot;:&quot;1.12_f39de243-b012-485d-989f-47ff2c2c2117&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:07:08.0253005+00:00&quot;}" class="row lose">1.12</div><div id="B4E1B07A2EB211D842348E969BBA386C52BD7CBFF67AD029595E085015ED3DB8" data-info="{&quot;Coefficient&quot;:1.13,&quot;SpinHash&quot;:&quot;B4E1B07A2EB211D842348E969BBA386C52BD7CBFF67AD029595E085015ED3DB8&quot;,&quot;Info&quot;:&quot;1.13_0949add6-f197-440a-85ec-c6587a0b8491&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:06:57.9003245+00:00&quot;}" class="row lose">1.13</div><div id="0D475D78DC01FA2D35021BCC306AC4F5668BB177FF3DBA112F90DF161631BD64" data-info="{&quot;Coefficient&quot;:1.84,&quot;SpinHash&quot;:&quot;0D475D78DC01FA2D35021BCC306AC4F5668BB177FF3DBA112F90DF161631BD64&quot;,&quot;Info&quot;:&quot;1.84_166ae5be-efb1-4a98-a224-1078ef9260f1&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:06:41.7441153+00:00&quot;}" class="row win">1.84</div><div id="5C0EDCAF6D6EF92E51EEBDEF1CC9E707E33B333442A4CC917D5F19F5010D000E" data-info="{&quot;Coefficient&quot;:3.51,&quot;SpinHash&quot;:&quot;5C0EDCAF6D6EF92E51EEBDEF1CC9E707E33B333442A4CC917D5F19F5010D000E&quot;,&quot;Info&quot;:&quot;3.51_1fddfdc4-42c5-46d1-aaf2-811bd9d5fcce&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:06:18.5566782+00:00&quot;}" class="row win">3.51</div><div id="9AC0E72BBC291861D92411C613E8157DA665E9DF78CA46F30D72EB2336110655" data-info="{&quot;Coefficient&quot;:1.2,&quot;SpinHash&quot;:&quot;9AC0E72BBC291861D92411C613E8157DA665E9DF78CA46F30D72EB2336110655&quot;,&quot;Info&quot;:&quot;1.2_8f610699-0276-417a-8e99-55d88d0e8743&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:06:07.3692075+00:00&quot;}" class="row lose">1.20</div><div id="3D41550D70C28B8F048C979209C5A4AD48E10457C051165B570F04340AE15FA7" data-info="{&quot;Coefficient&quot;:1.55,&quot;SpinHash&quot;:&quot;3D41550D70C28B8F048C979209C5A4AD48E10457C051165B570F04340AE15FA7&quot;,&quot;Info&quot;:&quot;1.55_b3ec4d08-6dad-4433-92ab-75870c894d0b&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:05:53.2754886+00:00&quot;}" class="row win">1.55</div><div id="229C1632959C73F18FA286EDDE67D3E71BDA8F726CBE7B5279F0AD0817A7BAF2" data-info="{&quot;Coefficient&quot;:1.23,&quot;SpinHash&quot;:&quot;229C1632959C73F18FA286EDDE67D3E71BDA8F726CBE7B5279F0AD0817A7BAF2&quot;,&quot;Info&quot;:&quot;1.23_8c2dda08-ad4d-4e35-9b1d-9d9ff04d6b6f&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:05:42.3223955+00:00&quot;}" class="row lose">1.23</div><div id="36702CD0F78DB52BF0C6815EABBC7FD7CA270E075BE87146113B5F6E8DF81F34" data-info="{&quot;Coefficient&quot;:2.13,&quot;SpinHash&quot;:&quot;36702CD0F78DB52BF0C6815EABBC7FD7CA270E075BE87146113B5F6E8DF81F34&quot;,&quot;Info&quot;:&quot;2.13_9094a70d-667a-443e-9e8b-ab888e915bb8&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:05:25.322444+00:00&quot;}" class="row win">2.13</div><div id="D5C5DBD93A627825D02989A21742F7891047EAC62D28752343F79EAA3D96CAEA" data-info="{&quot;Coefficient&quot;:1.17,&quot;SpinHash&quot;:&quot;D5C5DBD93A627825D02989A21742F7891047EAC62D28752343F79EAA3D96CAEA&quot;,&quot;Info&quot;:&quot;1.17_5c25d5d4-8905-4c90-b9c4-b7cb37768ddf&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:05:15.2912144+00:00&quot;}" class="row lose">1.17</div><div id="8325CBD77079CE057AFE21AF2D581160B312F60E7097D8C85BE450866D27470F" data-info="{&quot;Coefficient&quot;:1.27,&quot;SpinHash&quot;:&quot;8325CBD77079CE057AFE21AF2D581160B312F60E7097D8C85BE450866D27470F&quot;,&quot;Info&quot;:&quot;1.27_24d0eb5d-642f-42b6-9f04-08f79eeaa94e&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:05:03.8224935+00:00&quot;}" class="row lose">1.27</div><div id="A66F295F5FD9193C94267F39FCAB014B612BD7829C625AFA7B097D468C1073C0" data-info="{&quot;Coefficient&quot;:1.05,&quot;SpinHash&quot;:&quot;A66F295F5FD9193C94267F39FCAB014B612BD7829C625AFA7B097D468C1073C0&quot;,&quot;Info&quot;:&quot;1.05_73077000-2a3b-41bc-821d-3ee842a3ce7f&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:04:54.822515+00:00&quot;}" class="row lose">1.05</div><div id="65C1F8D44B0DF26F968D3A7F97488AA31D34F8F99AEF86B1F081C47D2F86C0CE" data-info="{&quot;Coefficient&quot;:1.62,&quot;SpinHash&quot;:&quot;65C1F8D44B0DF26F968D3A7F97488AA31D34F8F99AEF86B1F081C47D2F86C0CE&quot;,&quot;Info&quot;:&quot;1.62_7be314e3-70c9-4dbb-acef-aeabe9eab188&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:04:40.0725551+00:00&quot;}" class="row win">1.62</div><div id="E8C6C6C116A0D22A19049BE4F74B377E88053CE00E22CFD814A5CCEBA61899E1" data-info="{&quot;Coefficient&quot;:2.29,&quot;SpinHash&quot;:&quot;E8C6C6C116A0D22A19049BE4F74B377E88053CE00E22CFD814A5CCEBA61899E1&quot;,&quot;Info&quot;:&quot;2.29_93848d9e-9b12-40ca-b107-e5c52f5d74bf&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:04:21.7132359+00:00&quot;}" class="row win">2.29</div><div id="E811597E820427C165E67A213299FD7A9854661546EA459459240FD3F4B28A33" data-info="{&quot;Coefficient&quot;:6.97,&quot;SpinHash&quot;:&quot;E811597E820427C165E67A213299FD7A9854661546EA459459240FD3F4B28A33&quot;,&quot;Info&quot;:&quot;6.97_339c2293-cd1e-42bd-8b97-cc45b7545e3e&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:03:50.0726851+00:00&quot;}" class="row win">6.97</div><div id="2BB70574E9B18512FA59DF6BE4938F439A72AA6076E45F61EA8AF7EF38CB7A0F" data-info="{&quot;Coefficient&quot;:10.71,&quot;SpinHash&quot;:&quot;2BB70574E9B18512FA59DF6BE4938F439A72AA6076E45F61EA8AF7EF38CB7A0F&quot;,&quot;Info&quot;:&quot;10.71_9f688255-1cb2-4a36-8677-ba4e0a7846da&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:03:13.7134022+00:00&quot;}" class="row win">10.71</div><div id="3526539CCCC3D3D6E771808BDB54C9BB8A4FCD9659D9FBDB6EF73DA5C658B73E" data-info="{&quot;Coefficient&quot;:1.84,&quot;SpinHash&quot;:&quot;3526539CCCC3D3D6E771808BDB54C9BB8A4FCD9659D9FBDB6EF73DA5C658B73E&quot;,&quot;Info&quot;:&quot;1.84_0fbb4280-ed8a-4db6-a1dc-e60953c933b0&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:02:57.6196964+00:00&quot;}" class="row win">1.84</div><div id="1A8EE4B850BA3AC1C8A5076CDD4B8FBA90E99EA11153D920202460512C045482" data-info="{&quot;Coefficient&quot;:1.23,&quot;SpinHash&quot;:&quot;1A8EE4B850BA3AC1C8A5076CDD4B8FBA90E99EA11153D920202460512C045482&quot;,&quot;Info&quot;:&quot;1.23_1283af08-5dd5-4130-9fd5-db92f194f42f&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:02:46.4478519+00:00&quot;}" class="row lose">1.23</div><div id="FDCE19AAB204519BB9F53B78AEA0B78A9F9210E1DF181950870607213F069B4A" data-info="{&quot;Coefficient&quot;:2.75,&quot;SpinHash&quot;:&quot;FDCE19AAB204519BB9F53B78AEA0B78A9F9210E1DF181950870607213F069B4A&quot;,&quot;Info&quot;:&quot;2.75_6fc401b2-83b9-4b52-9901-425e52bdbf2d&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:02:25.2604013+00:00&quot;}" class="row win">2.75</div><div id="0A10941D8B387CFCF019102168921C57B0BC6C805A767587C0EF5DD6549401AA" data-info="{&quot;Coefficient&quot;:1.47,&quot;SpinHash&quot;:&quot;0A10941D8B387CFCF019102168921C57B0BC6C805A767587C0EF5DD6549401AA&quot;,&quot;Info&quot;:&quot;1.47_8d4ba985-20bd-4ec9-957c-196ccd2949a5&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:02:11.994811+00:00&quot;}" class="row lose">1.47</div><div id="D4EFCB4586E62BAB692C9E361244E94DC7976CC00F0D876A46933EFF74CC7408" data-info="{&quot;Coefficient&quot;:1.27,&quot;SpinHash&quot;:&quot;D4EFCB4586E62BAB692C9E361244E94DC7976CC00F0D876A46933EFF74CC7408&quot;,&quot;Info&quot;:&quot;1.27_29b5b79d-39f5-4a07-98ea-2af7e09aae11&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:02:00.1979698+00:00&quot;}" class="row lose">1.27</div><div id="586A0687E9143BD947BD719D3355D21853A149AF5740D7F26FBC70CF75E3846F" data-info="{&quot;Coefficient&quot;:13.08,&quot;SpinHash&quot;:&quot;586A0687E9143BD947BD719D3355D21853A149AF5740D7F26FBC70CF75E3846F&quot;,&quot;Info&quot;:&quot;13.08_c124cbf3-55cd-4fd7-ac97-0c0e495519dc&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:01:20.651201+00:00&quot;}" class="row win">13.08</div><div id="854C01D515E4186F46CDB6987C084AB7BDB8F96FB75BEFB3DCB18079F63EBFE4" data-info="{&quot;Coefficient&quot;:1.12,&quot;SpinHash&quot;:&quot;854C01D515E4186F46CDB6987C084AB7BDB8F96FB75BEFB3DCB18079F63EBFE4&quot;,&quot;Info&quot;:&quot;1.12_51681fa7-a427-488e-8313-e99a15ab4d61&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:01:10.5262207+00:00&quot;}" class="row lose">1.12</div><div id="712197E541CBE4A68BAAB50A25BD7D004E20F0CF15A3FC10EDCF5D1BF3F68CA1" data-info="{&quot;Coefficient&quot;:1.38,&quot;SpinHash&quot;:&quot;712197E541CBE4A68BAAB50A25BD7D004E20F0CF15A3FC10EDCF5D1BF3F68CA1&quot;,&quot;Info&quot;:&quot;1.38_dad82eaf-d756-4b8b-bd7b-39498a6308da&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:00:56.9168839+00:00&quot;}" class="row lose">1.38</div><div id="05398341C9EB4BCB4D41587E2A744998FA89BE081DD2D88C86C6EEABB6E8F59E" data-info="{&quot;Coefficient&quot;:1.38,&quot;SpinHash&quot;:&quot;05398341C9EB4BCB4D41587E2A744998FA89BE081DD2D88C86C6EEABB6E8F59E&quot;,&quot;Info&quot;:&quot;1.38_c16610bb-03c7-451c-8d3f-3fd92df97437&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:00:44.68254+00:00&quot;}" class="row lose">1.38</div><div id="73CBBDD4459B04658ABCBEB8BC1ECBB9B8DAF8E4648A1A0B4BC5B42F9F5665C4" data-info="{&quot;Coefficient&quot;:4.35,&quot;SpinHash&quot;:&quot;73CBBDD4459B04658ABCBEB8BC1ECBB9B8DAF8E4648A1A0B4BC5B42F9F5665C4&quot;,&quot;Info&quot;:&quot;4.35_5b249be3-28b5-46e8-b4b5-92a1dc196c27&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:00:18.4794864+00:00&quot;}" class="row win">4.35</div><div id="78877861375A2A8075975813B5756F4965A79F9842C95ABC2538A5EA55FF1AA9" data-info="{&quot;Coefficient&quot;:1.47,&quot;SpinHash&quot;:&quot;78877861375A2A8075975813B5756F4965A79F9842C95ABC2538A5EA55FF1AA9&quot;,&quot;Info&quot;:&quot;1.47_e9a0f885-8337-4e1d-9bbe-b01b32cd6a18&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T08:00:04.8545188+00:00&quot;}" class="row lose">1.47</div><div id="F717AD179D645D5FE9EE074B671674CD5FA17CFBD222FF6AEC10BEF40057D371" data-info="{&quot;Coefficient&quot;:2.6,&quot;SpinHash&quot;:&quot;F717AD179D645D5FE9EE074B671674CD5FA17CFBD222FF6AEC10BEF40057D371&quot;,&quot;Info&quot;:&quot;2.6_30e54fc3-c91f-4866-b420-f56f0c2f5e9d&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:59:44.6201963+00:00&quot;}" class="row win">2.60</div><div id="2D63885DF391A596A6B2E2C8D3573D64D49FF989D532A4674205ED334521D5F8" data-info="{&quot;Coefficient&quot;:1.08,&quot;SpinHash&quot;:&quot;2D63885DF391A596A6B2E2C8D3573D64D49FF989D532A4674205ED334521D5F8&quot;,&quot;Info&quot;:&quot;1.08_87bab96e-5c36-4ec0-8a7e-06597206d4d6&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:59:34.4796039+00:00&quot;}" class="row lose">1.08</div><div id="5B56AC88A306B2893347E793EC9DB0F9C940B49BD7A15AEEEE21349C4A98EEA1" data-info="{&quot;Coefficient&quot;:2.07,&quot;SpinHash&quot;:&quot;5B56AC88A306B2893347E793EC9DB0F9C940B49BD7A15AEEEE21349C4A98EEA1&quot;,&quot;Info&quot;:&quot;2.07_1967a3bd-6db6-4da4-9b40-e399a133cb00&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:59:17.4171503+00:00&quot;}" class="row win">2.07</div><div id="CEE693609DF79B84CD7C657F07FE3233107E8B66EC30E5545ABCEB0BF1DF434D" data-info="{&quot;Coefficient&quot;:1.05,&quot;SpinHash&quot;:&quot;CEE693609DF79B84CD7C657F07FE3233107E8B66EC30E5545ABCEB0BF1DF434D&quot;,&quot;Info&quot;:&quot;1.05_2d88473e-9a9d-4534-a045-03b2a42cf6eb&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:59:08.3077865+00:00&quot;}" class="row lose">1.05</div><div id="3A43BD7FC2F2D6CC791ABB7E461F4AB13F519830327F131F8CE25CD21A67F89B" data-info="{&quot;Coefficient&quot;:3.13,&quot;SpinHash&quot;:&quot;3A43BD7FC2F2D6CC791ABB7E461F4AB13F519830327F131F8CE25CD21A67F89B&quot;,&quot;Info&quot;:&quot;3.13_d26304a4-2ef0-484a-b122-17eed39cc871&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:58:46.1515951+00:00&quot;}" class="row win">3.13</div><div id="EADD24EA59F4C02CD4CD97F0B7D93CAB47E3F608A5CB3F44E425A9C836E3A26A" data-info="{&quot;Coefficient&quot;:1.02,&quot;SpinHash&quot;:&quot;EADD24EA59F4C02CD4CD97F0B7D93CAB47E3F608A5CB3F44E425A9C836E3A26A&quot;,&quot;Info&quot;:&quot;1.02_2446ba90-cb74-4ff5-888b-a99b46064b76&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:58:37.1047375+00:00&quot;}" class="row lose">1.02</div><div id="A4ADB2CB4D4F06975057EF189EA1F2FCA246A83C7DD3718E87FE2B187D0C3A3C" data-info="{&quot;Coefficient&quot;:1.34,&quot;SpinHash&quot;:&quot;A4ADB2CB4D4F06975057EF189EA1F2FCA246A83C7DD3718E87FE2B187D0C3A3C&quot;,&quot;Info&quot;:&quot;1.34_3ed836bf-7550-4edc-95cc-c45c204388b8&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:58:24.8860205+00:00&quot;}" class="row lose">1.34</div><div id="C3E1212EDB04281AD57A167B6206D0F3F1BBB0D3C9DCEF1952716B14131922B1" data-info="{&quot;Coefficient&quot;:1.62,&quot;SpinHash&quot;:&quot;C3E1212EDB04281AD57A167B6206D0F3F1BBB0D3C9DCEF1952716B14131922B1&quot;,&quot;Info&quot;:&quot;1.62_a995666d-2ddb-4bdd-9a91-38aa917f790e&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:58:10.7141807+00:00&quot;}" class="row win">1.62</div><div id="EF8A2E663DC086990795801D91B9AC618E8F2393D54C8B9CE8F52DDED888B9B4" data-info="{&quot;Coefficient&quot;:2.25,&quot;SpinHash&quot;:&quot;EF8A2E663DC086990795801D91B9AC618E8F2393D54C8B9CE8F52DDED888B9B4&quot;,&quot;Info&quot;:&quot;2.25_43659423-515c-4bd0-a378-94f12a3dd003&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:57:52.6361043+00:00&quot;}" class="row win">2.25</div><div id="4803689011F0B835C4B10518B5D8DAC7F323E64CE363628CDF320A42CF7F1850" data-info="{&quot;Coefficient&quot;:1.05,&quot;SpinHash&quot;:&quot;4803689011F0B835C4B10518B5D8DAC7F323E64CE363628CDF320A42CF7F1850&quot;,&quot;Info&quot;:&quot;1.05_a68f8d34-d44e-4ae8-8cc6-b7ce2dba158c&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:57:43.526749+00:00&quot;}" class="row lose">1.05</div><div id="BE578D96497F6A779477665AD8BB9B57357CF18392FA30B3F326288FDDCE63A1" data-info="{&quot;Coefficient&quot;:3.82,&quot;SpinHash&quot;:&quot;BE578D96497F6A779477665AD8BB9B57357CF18392FA30B3F326288FDDCE63A1&quot;,&quot;Info&quot;:&quot;3.82_33dd510c-c8e1-4a1a-adde-0d9458b90a4c&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:57:19.4330617+00:00&quot;}" class="row win">3.82</div><div id="32FAE1E84D6B5167793F26085885AC54E66BB2352C33774DC4BAA3CC9C975480" data-info="{&quot;Coefficient&quot;:2.53,&quot;SpinHash&quot;:&quot;32FAE1E84D6B5167793F26085885AC54E66BB2352C33774DC4BAA3CC9C975480&quot;,&quot;Info&quot;:&quot;2.53_d6605115-3e67-4623-80f1-c3b2f25ff0f2&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:56:59.1987335+00:00&quot;}" class="row win">2.53</div><div id="323EC013CD8D170C77F6F6343E43987E7EC9AF9C0891272703672183D9F3838B" data-info="{&quot;Coefficient&quot;:1.15,&quot;SpinHash&quot;:&quot;323EC013CD8D170C77F6F6343E43987E7EC9AF9C0891272703672183D9F3838B&quot;,&quot;Info&quot;:&quot;1.15_3b839241-98e5-4165-ab16-52ce09eb9377&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:56:49.1675103+00:00&quot;}" class="row lose">1.15</div><div id="F1A761A35B8FD5947167599C44D529884F24B905864B27BD0BF151770F04DCD8" data-info="{&quot;Coefficient&quot;:1.47,&quot;SpinHash&quot;:&quot;F1A761A35B8FD5947167599C44D529884F24B905864B27BD0BF151770F04DCD8&quot;,&quot;Info&quot;:&quot;1.47_9997cb75-a46c-42c5-8325-7ae46882e5ff&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:56:36.0737925+00:00&quot;}" class="row lose">1.47</div><div id="5812A44D49831A6BCB4FE4731D2AC80E6A6038B1DB09E1F05CADA579EF4B97EF" data-info="{&quot;Coefficient&quot;:23.16,&quot;SpinHash&quot;:&quot;5812A44D49831A6BCB4FE4731D2AC80E6A6038B1DB09E1F05CADA579EF4B97EF&quot;,&quot;Info&quot;:&quot;23.16_c8d3805d-a3b4-4389-9a29-e39c074e77cf&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:55:50.6207847+00:00&quot;}" class="row win">23.16</div><div id="EF6D9B20FA03E088DD392A011665A59DB2DB99F6C2A6F7161D54E3ABFBE1D331" data-info="{&quot;Coefficient&quot;:2.6,&quot;SpinHash&quot;:&quot;EF6D9B20FA03E088DD392A011665A59DB2DB99F6C2A6F7161D54E3ABFBE1D331&quot;,&quot;Info&quot;:&quot;2.6_9ff9ca22-3ee3-4648-9bfd-46f20130d4ca&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:55:30.4020828+00:00&quot;}" class="row win">2.60</div><div id="93807898705CDBFC6257B3CA8FBE5964041842F373EB085DCFA4B5E6E4BB1337" data-info="{&quot;Coefficient&quot;:3.66,&quot;SpinHash&quot;:&quot;93807898705CDBFC6257B3CA8FBE5964041842F373EB085DCFA4B5E6E4BB1337&quot;,&quot;Info&quot;:&quot;3.66_a441b9f8-53a3-4051-bda2-d94e04e1b289&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:55:06.0115173+00:00&quot;}" class="row win">3.66</div><div id="851035B9AC069E692200619FB9613026A52811E9A75C731269A1D5E79547B699" data-info="{&quot;Coefficient&quot;:1.25,&quot;SpinHash&quot;:&quot;851035B9AC069E692200619FB9613026A52811E9A75C731269A1D5E79547B699&quot;,&quot;Info&quot;:&quot;1.25_7c1d8179-5dd7-4268-a388-6475ae999f08&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:54:54.980298+00:00&quot;}" class="row lose">1.25</div><div id="A75D98A63A6D47584AAB0B97658925B1B036C41D9683DEDA3DAC31550E5ED752" data-info="{&quot;Coefficient&quot;:1.49,&quot;SpinHash&quot;:&quot;A75D98A63A6D47584AAB0B97658925B1B036C41D9683DEDA3DAC31550E5ED752&quot;,&quot;Info&quot;:&quot;1.49_91e6f54c-366d-4816-b7d2-acd44c9f23cb&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:54:41.8397157+00:00&quot;}" class="row lose">1.49</div><div id="08D82C1BB8A411FBAED0082F3C89ED34AB2B37B8191C9595E68CF1DE3D70299D" data-info="{&quot;Coefficient&quot;:1.17,&quot;SpinHash&quot;:&quot;08D82C1BB8A411FBAED0082F3C89ED34AB2B37B8191C9595E68CF1DE3D70299D&quot;,&quot;Info&quot;:&quot;1.17_98b27f4e-5cf1-46fc-80dd-b933a365f164&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:54:30.7459848+00:00&quot;}" class="row lose">1.17</div><div id="26F1C06A54BD0E4731F00C7759A4049CA22164CEEE491A4A34612EC554CAD3BC" data-info="{&quot;Coefficient&quot;:4.17,&quot;SpinHash&quot;:&quot;26F1C06A54BD0E4731F00C7759A4049CA22164CEEE491A4A34612EC554CAD3BC&quot;,&quot;Info&quot;:&quot;4.17_e6a854a2-c364-476f-b658-495fcf763575&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:54:05.4647937+00:00&quot;}" class="row win">4.17</div><div id="06E0596E3B400A1F611BF4B0D8F515D0E22091F5A0CA1C702E3C19AD9CC71BC1" data-info="{&quot;Coefficient&quot;:1.12,&quot;SpinHash&quot;:&quot;06E0596E3B400A1F611BF4B0D8F515D0E22091F5A0CA1C702E3C19AD9CC71BC1&quot;,&quot;Info&quot;:&quot;1.12_3ed9dfad-148f-46b5-9158-0992f7d86f02&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:53:55.3241924+00:00&quot;}" class="row lose">1.12</div><div id="04DDBF4E9EEEC7CAF05C0E0C18817B5D158B639B496482DA2F86E0C094AA287C" data-info="{&quot;Coefficient&quot;:2.96,&quot;SpinHash&quot;:&quot;04DDBF4E9EEEC7CAF05C0E0C18817B5D158B639B496482DA2F86E0C094AA287C&quot;,&quot;Info&quot;:&quot;2.96_75426ae6-dce3-469a-8042-fed06fb50230&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:53:34.15237+00:00&quot;}" class="row win">2.96</div><div id="B1B09CEC2752547A1D4B64EAEEAE0C45635A9609992DBEF07A83023593184D18" data-info="{&quot;Coefficient&quot;:2.01,&quot;SpinHash&quot;:&quot;B1B09CEC2752547A1D4B64EAEEAE0C45635A9609992DBEF07A83023593184D18&quot;,&quot;Info&quot;:&quot;2.01_0cb3c80f-f751-4882-b924-33c93174e76c&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:53:16.9024101+00:00&quot;}" class="row win">2.01</div><div id="3A73592A47A1D6CF507EA76FC6146C629BD0D0D94C1A33EEF1A71A6EB98392AF" data-info="{&quot;Coefficient&quot;:3.09,&quot;SpinHash&quot;:&quot;3A73592A47A1D6CF507EA76FC6146C629BD0D0D94C1A33EEF1A71A6EB98392AF&quot;,&quot;Info&quot;:&quot;3.09_e42fc2cf-0fbe-42d5-a6d6-9a8f062e4905&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:52:54.8555874+00:00&quot;}" class="row win">3.09</div><div id="6C4AF6A645AF6662188401547AF5B1D800D4B9BC4D0BA3330C3397ECE6D63EB0" data-info="{&quot;Coefficient&quot;:1.36,&quot;SpinHash&quot;:&quot;6C4AF6A645AF6662188401547AF5B1D800D4B9BC4D0BA3330C3397ECE6D63EB0&quot;,&quot;Info&quot;:&quot;1.36_c2b90ed8-eb15-4f62-87fa-036e98c7c094&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:52:42.6056158+00:00&quot;}" class="row lose">1.36</div><div id="082B20867C2945ADF37BBBC1BEFE52482A40DB2D73D29E32E9A86D62FFC9CCA9" data-info="{&quot;Coefficient&quot;:8.05,&quot;SpinHash&quot;:&quot;082B20867C2945ADF37BBBC1BEFE52482A40DB2D73D29E32E9A86D62FFC9CCA9&quot;,&quot;Info&quot;:&quot;8.05_27f5a84b-3616-4a8c-a1c8-ded0356dae7d&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:52:09.3244451+00:00&quot;}" class="row win">8.05</div><div id="27842431DEAE5F1C93AD9FF0E29C59D0A9EB3CF68EBBE8883773A8DF47131266" data-info="{&quot;Coefficient&quot;:25.24,&quot;SpinHash&quot;:&quot;27842431DEAE5F1C93AD9FF0E29C59D0A9EB3CF68EBBE8883773A8DF47131266&quot;,&quot;Info&quot;:&quot;25.24_9c6f61bc-bb7c-44a8-a1cd-87b2d9faf760&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:51:22.8089307+00:00&quot;}" class="row win">25.24</div><div id="BF522F6351637BC149285789DB7474C08E8F4625A7791A0E5C0523B070D9F741" data-info="{&quot;Coefficient&quot;:4.54,&quot;SpinHash&quot;:&quot;BF522F6351637BC149285789DB7474C08E8F4625A7791A0E5C0523B070D9F741&quot;,&quot;Info&quot;:&quot;4.54_e57e4515-e0ae-421f-8ada-b19ddc0c6cb9&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:50:56.5433624+00:00&quot;}" class="row win">4.54</div><div id="6DB62EB9FFF827510D5EFE0A06C869485C846612D885A1DA711BBA08D7AA1CE4" data-info="{&quot;Coefficient&quot;:1.38,&quot;SpinHash&quot;:&quot;6DB62EB9FFF827510D5EFE0A06C869485C846612D885A1DA711BBA08D7AA1CE4&quot;,&quot;Info&quot;:&quot;1.38_17ff3cef-8873-466e-bb80-ccf8fdd650b2&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:50:43.52792+00:00&quot;}" class="row lose">1.38</div><div id="9B5BED74ED90B2EC779DF4D85964B6936056CDB82BA5111A034266E14F40D40F" data-info="{&quot;Coefficient&quot;:1.2,&quot;SpinHash&quot;:&quot;9B5BED74ED90B2EC779DF4D85964B6936056CDB82BA5111A034266E14F40D40F&quot;,&quot;Info&quot;:&quot;1.2_a77ce0f4-091d-4790-9614-671b2ee18e97&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:50:32.4027941+00:00&quot;}" class="row lose">1.20</div><div id="FDD4905849F1D8875170CADFD1739CE1EEAB9ACA0D1E5CF74864992B9E8F35C7" data-info="{&quot;Coefficient&quot;:1.34,&quot;SpinHash&quot;:&quot;FDD4905849F1D8875170CADFD1739CE1EEAB9ACA0D1E5CF74864992B9E8F35C7&quot;,&quot;Info&quot;:&quot;1.34_6346249b-139f-4d4c-9769-da4b5e7c5cfd&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:50:20.2778215+00:00&quot;}" class="row lose">1.34</div><div id="CE44BEFA7B5E592784E0EC186AE50DDE2BABB86DFD9A086638D34AEAF45FB0DD" data-info="{&quot;Coefficient&quot;:3.77,&quot;SpinHash&quot;:&quot;CE44BEFA7B5E592784E0EC186AE50DDE2BABB86DFD9A086638D34AEAF45FB0DD&quot;,&quot;Info&quot;:&quot;3.77_74953045-c675-4e06-9806-0dd4097f93a3&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:49:56.0903743+00:00&quot;}" class="row win">3.77</div><div id="503323D72E3A9FAC6051FC3CD0B05B420E46EA5505033189BF16F50B7C458AD6" data-info="{&quot;Coefficient&quot;:15.53,&quot;SpinHash&quot;:&quot;503323D72E3A9FAC6051FC3CD0B05B420E46EA5505033189BF16F50B7C458AD6&quot;,&quot;Info&quot;:&quot;15.53_f9a6d556-af1a-4446-abb7-dd93d48eadbc&quot;,&quot;SpinTime&quot;:&quot;2024-07-09T07:49:14.8092185+00:00&quot;}" class="row win">15.53</div></div>
+            </aside>
+            <div id="main">
+                <div class="rtp">
+                    <div class="left">PROBABILIDAD DE LA GANANCIA MÁXIMA: <span>0,00995%</span></div>
+                    <div class="right">RTP: <span>97%</span></div>
+                </div>
+                <div class="canvas GameParent" style="width: 100%; margin-left: 0px; height: 307.851px;"><canvas width="1410" height="689" style="touch-action: none; width: 1410px; height: 689px; cursor: inherit;"></canvas></div>
+                <div class="buttons" style="height: calc(100% - 312.851px);">
+                    <div class="tabs none">
+                        <a data-tab="cash-game" class="active">CASH GAME</a>
+                        <a data-tab="gift">FREESPINS</a>
+                    </div>
+
+                    <div class="cash-game page">
+                        
+                        <div id="button-0" class="buttons-col place-bet">
+                            <div class="bet-div">
+                                <div class="bet-col1">
+                                    <div class="bet-input bets">
+                                        <div class="auto">
+                                            <div class="head">AUTO</div>
+                                            <label class="checkbox">
+                                                <input id="auto-bet-0" type="checkbox">
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                        <div class="label">Monto</div>
+                                        <div class="input">
+                                            <div>
+                                                <input id="bet-value-0" autocomplete="off" type="number" class="inp cop" data-minbet="500" data-maxbet="100000" data-last="0" value="1000.00" onkeydown="">
+                                                <span style="left: 33px;"><span class="currency">COP</span></span>
+                                                <a data-button="0" class="minus disabled" data-step="1000.00"></a>
+                                                <a data-button="0" class="plus" data-step="1000.00"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-button="0" class="bet-x2">
+                                        X2
+                                    </div>
+                                    <div class="bet-list">
+                                        
+                                        <a data-button="0" data-sound="1" data-bet="5000.00">5000</a>
+                                        
+                                        <a data-button="0" data-sound="2" data-bet="10000.00">10000</a>
+                                        
+                                        <a data-button="0" data-sound="3" data-bet="50000.00">50000</a>
+                                        
+                                        <a data-button="0" data-sound="4" data-bet="0">TODOS</a>
+                                    </div>
+                                    <div class="bet-input cash-out">
+                                        <div class="auto">
+                                            <div class="head">AUTO</div>
+                                            <label class="checkbox">
+                                                <input id="auto-cash-out-0" type="checkbox">
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                        <div class="label">Cobro</div>
+                                        <div class="input">
+                                            <div>
+                                                <input id="cash-out-value-0" autocomplete="off" type="number" data-step="0.01" class="inp" value="2.00">
+                                                <span style="left: 35px;">x</span>
+                                                <a data-button="0" class="minus"></a>
+                                                <a data-button="0" class="plus"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bet-col2">
+                                    <div data-button="0" id="bet-0" class="bet place-bet">
+                                        <div class="win">
+                                            <div class="win-caption">Ganancia</div>
+                                            <div class="win-value"></div>
+                                        </div>
+
+                                        <div class="info error" style="display: none;">
+                                            <div class="error-info"></div>
+                                            <div class="success-info"></div>
+                                        </div>
+
+                                        <div class="place-bet-div">
+                                            <div class="place-bet1">Haz tu apuesta</div>
+                                            <div class="place-bet2">Para la próxima ronda</div>
+                                        </div>
+
+                                        <div class="cancel-bet-div">
+                                            <div class="cancel-bet1">Cancelar </div>
+                                        </div>
+
+                                        <div class="cash-out-div">
+                                            <div class="cash-out1">1.63 <span class="currency"></span></div>
+                                            <div class="cash-out2">Cobro</div>
+                                        </div>
+
+                                        <div class="disable-div">
+                                            <div class="disable1">APUESTA</div>
+                                            <div class="disable2">ACEPTADA</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="button-1" class="buttons-col place-bet">
+                            <div class="bet-div">
+                                <div class="bet-col1">
+                                    <div class="bet-input bets">
+                                        <div class="auto">
+                                            <div class="head">AUTO</div>
+                                            <label class="checkbox">
+                                                <input id="auto-bet-1" type="checkbox">
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                        <div class="label">Monto</div>
+                                        <div class="input">
+                                            <div>
+                                                <input id="bet-value-1" autocomplete="off" type="number" class="inp cop" data-minbet="500" data-maxbet="100000" data-last="0" value="1000.00" onkeydown="">
+                                                <span style="left: 33px;"><span class="currency">COP</span></span>
+                                                <a data-button="1" class="minus disabled" data-step="1000.00"></a>
+                                                <a data-button="1" class="plus" data-step="1000.00"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-button="1" class="bet-x2">
+                                        X2
+                                    </div>
+                                    <div class="bet-list">
+                                        
+                                        <a data-button="1" data-sound="1" data-bet="5000.00">5000</a>
+                                        
+                                        <a data-button="1" data-sound="2" data-bet="10000.00">10000</a>
+                                        
+                                        <a data-button="1" data-sound="3" data-bet="50000.00">50000</a>
+                                        
+                                        <a data-button="1" data-sound="4" data-bet="0">TODOS</a>
+                                    </div>
+                                    <div class="bet-input cash-out">
+                                        <div class="auto">
+                                            <div class="head">AUTO</div>
+                                            <label class="checkbox">
+                                                <input id="auto-cash-out-1" type="checkbox">
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                        <div class="label">Cobro</div>
+                                        <div class="input">
+                                            <div>
+                                                <input id="cash-out-value-1" autocomplete="off" type="number" data-step="0.01" class="inp" value="2.00">
+                                                <span style="left: 35px;">x</span>
+                                                <a data-button="1" class="minus"></a>
+                                                <a data-button="1" class="plus"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bet-col2">
+                                    <div data-button="1" id="bet-1" class="bet place-bet">
+                                        <div class="win">
+                                            <div class="win-caption">Ganancia</div>
+                                            <div class="win-value"></div>
+                                        </div>
+
+                                        <div class="info error" style="display: none;">
+                                            <div class="error-info"></div>
+                                            <div class="success-info"></div>
+                                        </div>
+
+                                        <div class="place-bet-div">
+                                            <div class="place-bet1">Haz tu apuesta</div>
+                                            <div class="place-bet2">Para la próxima ronda</div>
+                                        </div>
+
+                                        <div class="cancel-bet-div">
+                                            <div class="cancel-bet1">Cancelar </div>
+                                        </div>
+
+                                        <div class="cash-out-div">
+                                            <div class="cash-out1">1.63 <span class="currency"></span></div>
+                                            <div class="cash-out2">Cobro</div>
+                                        </div>
+
+                                        <div class="disable-div">
+                                            <div class="disable1">APUESTA</div>
+                                            <div class="disable2">ACEPTADA</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="gift none page">
+                        <div class="gift-row"></div>
+                        <div class="gift-row">
+                            <div class="gift-left">
+                                <div class="gift-left1 none">
+                                    <div class="head">Precio del Giro Gratis</div>
+                                    <div class="value" id="GiftSpinAmount">111</div>
+                                </div>
+                                <div class="gift-left1">
+                                    <div class="head">Ganancia de giros gratis</div>
+                                    <div class="value green" id="GiftSpinWin">111</div>
+                                </div>
+                                <div class="gift-left2">
+                                    <div class="head yellow">Recibidos </div>
+                                    <div class="value yellow" id="GiftSpinCount">1</div>
+                                </div>
+                                <div class="gift-left2 none">
+                                    <div class="head">Utilizados</div>
+                                    <div class="value" id="GiftSpinUsed">1</div>
+                                </div>
+                                <div class="gift-left2">
+                                    <div class="head green">დარჩენილი</div>
+                                    <div class="value green" id="GiftSpinLeft">1</div>
+                                </div>
+                            </div>
+                            <div class="gift-right">
+                                <div class="bet disabled place-bet" data-button="3" id="bet-3">
+                                    <div class="win">
+                                        <div class="win-caption">Ganancia</div>
+                                        <div class="win-value"></div>
+                                    </div>
+
+                                    <div class="info error" style="display: none;">
+                                        <div class="error-info"></div>
+                                        <div class="success-info"></div>
+                                    </div>
+
+                                    <div class="place-bet-div">
+                                        <div class="place-bet1">0.20 <span class="currency"></span></div>
+                                        <div class="place-bet2">Apostar Giro Gratis</div>
+                                    </div>
+
+                                    <div class="cancel-bet-div">
+                                        <div class="cancel-bet1">Cancelar </div>
+                                    </div>
+
+                                    <div class="cash-out-div">
+                                        <div class="cash-out1">1.63 <span class="currency"></span></div>
+                                        <div class="cash-out2">Cobro</div>
+                                    </div>
+
+                                    <div class="disable-div">
+                                        <div class="disable1">APUESTA</div>
+                                        <div class="disable2">ACEPTADA</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="gift-right">
+                                <div class="bet disabled place-bet" data-button="2" id="bet-2">
+                                    <div class="win">
+                                        <div class="win-caption">Ganancia</div>
+                                        <div class="win-value"></div>
+                                    </div>
+                                    <div class="info error" style="display: none;">
+                                        <div class="error-info"></div>
+                                        <div class="success-info"></div>
+                                    </div>
+
+                                    <div class="place-bet-div">
+                                        <div class="place-bet1">0.20 <span class="currency"></span></div>
+                                        <div class="place-bet2">Apostar Giro Gratis</div>
+                                    </div>
+
+                                    <div class="cancel-bet-div">
+                                        <div class="cancel-bet1">Cancelar </div>
+                                    </div>
+
+                                    <div class="cash-out-div">
+                                        <div class="cash-out1">1.63 <span class="currency"></span></div>
+                                        <div class="cash-out2">Cobro</div>
+                                    </div>
+
+                                    <div class="disable-div">
+                                        <div class="disable1">APUESTA</div>
+                                        <div class="disable2">ACEPTADA</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gift-row"></div>
+                    </div>
+                </div>
+            </div>
+            <aside id="right">
+                <div class="info">
+                    <div class="info-tabs">
+                        <a data-tab="bets" class="active">Apuestas actuales</a>
+                        <a data-tab="my-bets">Mis apuestas</a>
+                        <a data-tab="stats">Estadísticas</a>
+                    </div>
+
+                    <div class="info-content bets active">
+                        <div class="head">
+                            <div class="col1"><div>Usuario</div></div>
+                            <div class="col2">Monto</div>
+                            <div class="col3">Cobro</div>
+                            <div class="col4">Ganancia</div>
+                        </div>
+                        <div class="list" id="players"><div><div id="playersCurrent"></div><div id="playersActive" style="height: 124px; padding-top: 0px;"><div class="row"><div class="col1"><div>B****2</div></div><div class="col2">5000 <span class="currency">COP</span></div><div class="col3">--</div><div class="col4">--</div></div><div class="row"><div class="col1"><div>B****1</div></div><div class="col2">2000 <span class="currency">COP</span></div><div class="col3">--</div><div class="col4">--</div></div><div class="row"><div class="col1"><div>B****9</div></div><div class="col2">1000 <span class="currency">COP</span></div><div class="col3">--</div><div class="col4">--</div></div><div class="row"><div class="col1"><div>B****8</div></div><div class="col2">500 <span class="currency">COP</span></div><div class="col3">--</div><div class="col4">--</div></div></div><div id="playersCashOut" style="height: 341px; padding-top: 0px;"><div class="row win"><div class="col1"><div>B****5</div></div><div class="col2">1000 <span class="currency">COP</span></div><div class="col3">3.79</div><div class="col4">3790 <span class="currency">COP</span></div></div><div class="row win"><div class="col1"><div>B****0</div></div><div class="col2">2000 <span class="currency">COP</span></div><div class="col3">3.72</div><div class="col4">7440 <span class="currency">COP</span></div></div><div class="row win"><div class="col1"><div>B****0</div></div><div class="col2">6000 <span class="currency">COP</span></div><div class="col3">3.42</div><div class="col4">20520 <span class="currency">COP</span></div></div><div class="row win"><div class="col1"><div>B****1</div></div><div class="col2">6000 <span class="currency">COP</span></div><div class="col3">2.74</div><div class="col4">16440 <span class="currency">COP</span></div></div><div class="row win"><div class="col1"><div>B****0</div></div><div class="col2">10000 <span class="currency">COP</span></div><div class="col3">2.33</div><div class="col4">23300 <span class="currency">COP</span></div></div><div class="row win"><div class="col1"><div>B****0</div></div><div class="col2">8000 <span class="currency">COP</span></div><div class="col3">2.23</div><div class="col4">17840 <span class="currency">COP</span></div></div><div class="row win"><div class="col1"><div>B****2</div></div><div class="col2">10000 <span class="currency">COP</span></div><div class="col3">2.22</div><div class="col4">22200 <span class="currency">COP</span></div></div><div class="row win"><div class="col1"><div>B****8</div></div><div class="col2">600 <span class="currency">COP</span></div><div class="col3">1.79</div><div class="col4">1074 <span class="currency">COP</span></div></div><div class="row win"><div class="col1"><div>B****9</div></div><div class="col2">2000 <span class="currency">COP</span></div><div class="col3">1.67</div><div class="col4">3340 <span class="currency">COP</span></div></div><div class="row win"><div class="col1"><div>B****3</div></div><div class="col2">2000 <span class="currency">COP</span></div><div class="col3">1.32</div><div class="col4">2640 <span class="currency">COP</span></div></div><div class="row win"><div class="col1"><div>B****3</div></div><div class="col2">8000 <span class="currency">COP</span></div><div class="col3">1.18</div><div class="col4">9440 <span class="currency">COP</span></div></div></div></div></div>
+                    </div>
+                    <div class="info-content my-bets">
+                        <div class="head">
+                            <div class="col1"><div>Hora</div></div>
+                            <div class="col3">Boom</div>
+                            <div class="col2">Monto</div>
+                            <div class="col3">Cobro</div>
+                            <div class="col4">Ganancia</div>
+                        </div>
+                        <div class="list" id="last24ClientSpins"></div>
+                    </div>
+                    <div class="info-content stats">
+                        <div id="infoContentStatsMenu" class="info-content-menu">
+                            <a data-tab="HugeWins" class="active">MEJORES PREMIOS</a>
+                            <a data-tab="BigWins">TOP X</a>
+                            <a data-tab="Coeffs">RONDA X</a>
+                        </div>
+                        <div id="infoContentStatsMenu2" class="info-content-menu">
+                            <a data-tab="Daily" class="active">DIARIAS</a>
+                            <a data-tab="Weekly">SEMANALES</a>
+                            <a data-tab="Monthly">MENSUALES</a>
+                        </div>
+                        <div id="infoContentStats" class="info-content-stats">
+                            <div class="head" id="infoContentStatsHead"></div>
+                            <div class="list" id="infoContentStatsList"></div>
+                        </div>
+                        <div class="none">
+                            <div class="head">
+                                <div class="col1"><div>Usuario</div></div>
+                                <div class="col2">Monto</div>
+                                <div class="col3">Probabilidad</div>
+                                <div class="col4">Ganancia</div>
+                            </div>
+                            <div class="list" id="last20BigWins"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat">
+                    <div class="head">
+                        Chat
+                        <a class="arrow"></a>
+                    </div>
+                    <div class="chat-content">
+                        <div class="chat-message">
+                        </div>
+                        <div class="chat-input">
+                            <div class="chat-input-left">
+                                <input autocomplete="off" type="text" id="chat-message" name="message" placeholder="Escribe aquí">
+                            </div>
+                            <div class="chat-input-right">
+                                <input autocomplete="off" type="button" id="send-chat" value="Enviar">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <div class="popup">
+        <div class="popup-div">
+            <div class="popup-head">Mensaje</div>
+            <div class="popup-content">
+                Mensaje
+                <br>
+                <a class="popup-bt">Salir</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="jacpotImage" style="visibility: hidden; position: fixed; left: -10000px; top: -10000px;"> </div>
+
+    <!-- <div class="jackpot-popup">
+        <div class="jackpot-popup-div">
+            <div class="jackpot-popup-head">
+                Jackpot
+                <div class="jackpot-popup-close">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        width="17px" height="16px">
+                        <path fill-rule="evenodd"  fill="rgb(95, 95, 95)"
+                              d="M10.393,7.996 L16.699,1.700 C17.091,1.309 17.091,0.675 16.699,0.284 C16.307,-0.107 15.673,-0.107 15.281,0.284 L8.975,6.580 L2.668,0.284 C2.276,-0.107 1.642,-0.107 1.250,0.284 C0.858,0.675 0.858,1.309 1.250,1.700 L7.557,7.996 L1.250,14.292 C0.858,14.683 0.858,15.317 1.250,15.708 C1.446,15.903 1.703,16.001 1.959,16.001 C2.215,16.001 2.472,15.903 2.668,15.708 L8.975,9.412 L15.281,15.708 C15.477,15.903 15.734,16.001 15.990,16.001 C16.246,16.001 16.503,15.903 16.699,15.708 C17.091,15.317 17.091,14.683 16.699,14.292 L10.393,7.996 Z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="jackpot-popup-content">
+               <div class="jackpot-popup-star-left"></div>
+               <div class="jackpot-popup-star-right"></div>
+               <div class="jackpot-popup-div1">El jackpot se ha agotado</div>
+               <div class="jackpot-popup-div2">2323</div>
+               <div class="jackpot-popup-div3">Ganaste</div>
+               <div class="jackpot-popup-div4">1212</div>
+            </div>
+        </div>
+    </div> -->
+
+    <div id="jackpot-new">
+        <img id="jackpots-image" class="animation-jackpots-image-hidden" src="" alt="">
+        
+        <div class="jackpot-clone">
+            
+            <p>JACKPOT</p>
+            <div>
+                <div class="list-element-1">
+                    <div class="list-elements list-jackpot"></div>
+                </div>
+                <div class="list-element-1">
+                    <div class="list-elements list-jackpot"></div>
+                </div>
+                <div class="list-element-1">
+                    <div class="list-elements list-jackpot"></div>
+                </div>
+                <div class="list-element-1">
+                    <div class="list-elements list-jackpot"></div>
+                </div>
+                <div class="list-element-1">
+                    <div class="list-elements list-jackpot"></div>
+                </div>
+                <div class="list-element-1">
+                    <div class="list-elements list-jackpot"></div>
+                </div>
+                <div class="list-element-1">
+                    <div class="list-elements list-jackpot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="info-on-start" class="help-popup info-on-start">
+        <div class="help-popup-div">
+            <div class="help-popup-head">
+                <div data-tab="play" class="help-head-item active">Cómo jugar</div>
+                <div class="help-idq"></div>
+                <div class="help-popup-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="16px">
+                        <path fill-rule="evenodd" fill="rgb(95, 95, 95)" d="M10.393,7.996 L16.699,1.700 C17.091,1.309 17.091,0.675 16.699,0.284 C16.307,-0.107 15.673,-0.107 15.281,0.284 L8.975,6.580 L2.668,0.284 C2.276,-0.107 1.642,-0.107 1.250,0.284 C0.858,0.675 0.858,1.309 1.250,1.700 L7.557,7.996 L1.250,14.292 C0.858,14.683 0.858,15.317 1.250,15.708 C1.446,15.903 1.703,16.001 1.959,16.001 C2.215,16.001 2.472,15.903 2.668,15.708 L8.975,9.412 L15.281,15.708 C15.477,15.903 15.734,16.001 15.990,16.001 C16.247,16.001 16.503,15.903 16.699,15.708 C17.091,15.317 17.091,14.683 16.699,14.292 L10.393,7.996 Z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="help-popup-content play">
+                <div class="play-group"> <div class="play-item play-text play-text-right"> Haz tu apuesta antes del despegue </div> <div class="play-item play-circle">1</div> <div class="play-item play-img1">
+            
+            <div class="help-bet">Monto</div>
+            <div class="help-bet-auto">AUTO</div>
+            <div class="help-cash-out">Cobro</div>
+            <div class="help-cash-out-auto">AUTO</div>
+            <div class="help-amount">100000 COP</div>
+            <div class="help-coef">10.00 x</div>
+            <div class="help-bet-list-0">5000 COP</div>
+            <div class="help-bet-list-1">10000 COP</div>
+            <div class="help-bet-list-2">50000 COP</div>
+            <div class="help-bet-list-3">TODOS</div>
+        
+            <div class="help-place-bet-button">Haz tu apuesta</div>
+        </div> </div> <div class="play-group"> <div class="play-item play-img2">
+            <div class="help-cash-out-coef">25000</div>
+        </div> <div class="play-item play-circle">2</div> <div class="play-item play-text play-text-left">Arriesga y espera a que las probabilidades suban</div> </div> <div class="play-group"> <div class="play-item play-text play-text-right"> Retira el dinero antes de que explote </div> <div class="play-item play-circle">3</div> <div class="play-item play-img3">
+            
+            <div class="help-bet">Monto</div>
+            <div class="help-bet-auto">AUTO</div>
+            <div class="help-cash-out">Cobro</div>
+            <div class="help-cash-out-auto">AUTO</div>
+            <div class="help-amount">100000 COP</div>
+            <div class="help-coef">10.00 x</div>
+            <div class="help-bet-list-0">5000 COP</div>
+            <div class="help-bet-list-1">10000 COP</div>
+            <div class="help-bet-list-2">50000 COP</div>
+            <div class="help-bet-list-3">TODOS</div>
+        
+            <div class="help-cash-out-button">
+                <div class="text1">10000000 COP</div>
+                <div class="text2">Cobro</div>
+            </div>
+        </div> </div>
+            </div>
+            <div class="help-popup-footer">
+                <label class="help-popup-checkbox">
+                    <input id="help-accept" type="checkbox" checked="">
+                    <span></span>
+                    No mostrar de nuevo
+                </label>
+                <a class="help-popup-accept">Aceptar</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="help-popup" class="help-popup">
+        <div class="help-popup-div">
+            <div class="help-popup-head">
+                <div data-tab="play" class="help-head-item active">Cómo jugar</div>
+                <div data-tab="rules" class="help-head-item">REGLAS</div>
+                <div class="help-idq"></div>
+                <div class="help-popup-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="16px">
+                        <path fill-rule="evenodd" fill="rgb(95, 95, 95)" d="M10.393,7.996 L16.699,1.700 C17.091,1.309 17.091,0.675 16.699,0.284 C16.307,-0.107 15.673,-0.107 15.281,0.284 L8.975,6.580 L2.668,0.284 C2.276,-0.107 1.642,-0.107 1.250,0.284 C0.858,0.675 0.858,1.309 1.250,1.700 L7.557,7.996 L1.250,14.292 C0.858,14.683 0.858,15.317 1.250,15.708 C1.446,15.903 1.703,16.001 1.959,16.001 C2.215,16.001 2.472,15.903 2.668,15.708 L8.975,9.412 L15.281,15.708 C15.477,15.903 15.734,16.001 15.990,16.001 C16.247,16.001 16.503,15.903 16.699,15.708 C17.091,15.317 17.091,14.683 16.699,14.292 L10.393,7.996 Z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="help-popup-content play">
+                <div class="play-group"> <div class="play-item play-text play-text-right"> Haz tu apuesta antes del despegue </div> <div class="play-item play-circle">1</div> <div class="play-item play-img1">
+            
+            <div class="help-bet">Monto</div>
+            <div class="help-bet-auto">AUTO</div>
+            <div class="help-cash-out">Cobro</div>
+            <div class="help-cash-out-auto">AUTO</div>
+            <div class="help-amount">100000 COP</div>
+            <div class="help-coef">10.00 x</div>
+            <div class="help-bet-list-0">5000 COP</div>
+            <div class="help-bet-list-1">10000 COP</div>
+            <div class="help-bet-list-2">50000 COP</div>
+            <div class="help-bet-list-3">TODOS</div>
+        
+            <div class="help-place-bet-button">Haz tu apuesta</div>
+        </div> </div> <div class="play-group"> <div class="play-item play-img2">
+            <div class="help-cash-out-coef">25000</div>
+        </div> <div class="play-item play-circle">2</div> <div class="play-item play-text play-text-left">Arriesga y espera a que las probabilidades suban</div> </div> <div class="play-group"> <div class="play-item play-text play-text-right"> Retira el dinero antes de que explote </div> <div class="play-item play-circle">3</div> <div class="play-item play-img3">
+            
+            <div class="help-bet">Monto</div>
+            <div class="help-bet-auto">AUTO</div>
+            <div class="help-cash-out">Cobro</div>
+            <div class="help-cash-out-auto">AUTO</div>
+            <div class="help-amount">100000 COP</div>
+            <div class="help-coef">10.00 x</div>
+            <div class="help-bet-list-0">5000 COP</div>
+            <div class="help-bet-list-1">10000 COP</div>
+            <div class="help-bet-list-2">50000 COP</div>
+            <div class="help-bet-list-3">TODOS</div>
+        
+            <div class="help-cash-out-button">
+                <div class="text1">10000000 COP</div>
+                <div class="text2">Cobro</div>
+            </div>
+        </div> </div>
+            </div>
+
+            <div class="help-popup-content rules none"><div class="rules-item">         <div class="rules-title">¿DE QUÉ TRATA JETX?</div>          <div class="rules-content"><div> JETX ES UN JUEGO DE SMARTSOFT EN EL QUE PUEDES GANAR DINERO DE FORMA RÁPIDA Y SENCILLA. </div></div>     </div>     <div class="rules-item">         <div class="rules-title">¿CÓMO JUGAR A JETX?</div>          <div class="rules-content"><div> HAZ UNA APUESTA ANTES DE QUE EL AVIÓN DESPEGUE. PUEDES HACER UNA SOLA APUESTA O DOS APUESTAS SOBRE EL MISMO VUELO DE JETX. LA APUESTA MÍNIMA ES 500 COP, Y LA MÁXIMA ES 100000 COP. UTILIZA LOS BOTONES +/- JUNTO A CADA OPCIÓN DE APUESTA PARA AJUSTAR EL IMPORTE DE LA MISMA.</div><div> UTILIZA EL BOTÓN "COBRAR" PARA COBRAR LAS GANANCIAS. INTENTA VOLAR LO MÁS ALTO POSIBLE Y COBRAR ANTES DE QUE EL AVIÓN EXPLOTE. LA ALTURA DE VUELO NO ESTÁ DETERMINADA Y VARÍA DESDE 1 HASTA EL TOPE MÁXIMO DE GANANCIAS.</div><div> UTILIZA LA FUNCIÓN "AUTOPLAY" PARA ESTABLECER AUTOMÁTICAMENTE EL MISMO VALOR DE APUESTA EN CADA NUEVA RONDA. PUEDES HACERLO EN UNA O EN AMBAS SELECCIONES DE APUESTAS. </div><div> LOS JUGADORES TIENEN LA OPCIÓN DE UTILIZAR EL MODO DE COBRO AUTOMÁTICO DENTRO DE UN RANGO ESPECIFICADO, DESDE 1,01X HASTA 1.000X.</div><div> CUANDO SE ACTIVA EL MODO DE COBRO AUTOMÁTICO, LA APUESTA DEL JUGADOR SE COBRARÁ AUTOMÁTICAMENTE SI EL JUEGO ALCANZA EL MULTIPLICADOR ESPECIFICADO EN EL MODO.SIN EMBARGO, LOS JUGADORES TAMBIÉN TIENEN LA LIBERTAD DE COBRAR MANUALMENTE SU APUESTA EN CUALQUIER MOMENTO ANTES DE ALCANZAR EL VALOR DE COBRO AUTOMÁTICO, SIEMPRE QUE EL VALOR DE COBRO MANUAL SEA INFERIOR AL MULTIPLICADOR DE COBRO AUTOMÁTICO.</div><div> EN CASO DE QUE EL JUEGO SE CAIGA ANTES DE QUE SE PRODUZCA UN COBRO, LA APUESTA DEL JUGADOR SE CONSIDERARÁ PERDIDA, INDEPENDIENTEMENTE DE SI ESTABA UTILIZANDO EL MODO DE COBRO AUTOMÁTICO O PRETENDÍA COBRAR MANUALMENTE.</div><div> EN LA ESQUINA IZQUIERDA DEL PANEL DEL JUEGO, SE PRESENTAN LAS ESTADÍSTICAS DE LOS COEFICIENTES Y EL HISTORIAL DEL JUEGO. LOS VALORES SE MUESTRAN EN VERDE Y ROJO: EL COLOR ROJO INDICA LOS COEFICIENTES INFERIORES A 1,5 Y EL VERDE LOS SUPERIORES A 1,5.</div></div>         </div>          <div class="rules-item">              <div class="rules-title">¿CÓMO SE CALCULA LA GANANCIA?</div>              <div class="rules-content"><div> LA GANANCIA POTENCIAL SE CALCULA MULTIPLICANDO EL COEFICIENTE DE VUELO ACTUAL Y LA APUESTA REALIZADA. </div><div> EL MULTIPLICADOR MÍNIMO (COEFICIENTE) ES 1,01X. EL PREMIO MÁXIMO POR APUESTA ES DE 10000000COP.</div><div> CUANDO SE ALCANZA EL TOPE MÁXIMO DE GANANCIAS, EL IMPORTE DE LAS MISMAS SE COBRA AUTOMÁTICAMENTE. </div></div>             </div>              <div class="rules-item">                  <div class="rules-title">¿CÓMO OBTENGO LAS GANANCIAS?</div>                  <div class="rules-content"><div> UTILIZA EL BOTÓN DE COBRO ANTES DE LA EXPLOSIÓN (LA GANANCIA SE REFLEJA INSTANTÁNEAMENTE EN EL SALDO). EL BOTÓN DE COBRO ESTÁ DISPONIBLE CUANDO EL MULTIPLICADOR DEL JUEGO ALCANZA O SUPERA 1,01X. SI SE PRODUCE LA EXPLOSIÓN, LA APUESTA SE CONSIDERA PERDIDA.</div><div> EL RTP DEL JUEGO ES DE 96.2-98.9% </div><div> <span id="game-version"></span> </div><div> EL JUGADOR PUEDE CONSEGUIR EL MÁXIMO RTP SI OPTA POR APOSTAR POR EL MULTIPLICADOR DE COLISIÓN MÁS BAJO POSIBLE (COEFICIENTE) ADEMÁS, CUANDO SE ALCANZA EL COEFICIENTE MÁXIMO DE 25 000X, LA CANTIDAD GANADA SE RECOGE AUTOMÁTICAMENTE. </div></div>                 </div>                 <div class="rules-item">                      <div class="rules-title">¿QUÉ PASA SI ME DESCONECTO?</div>                      <div class="rules-content"><div>LA DESCONEXIÓN SE DEFINE COMO UNA SITUACIÓN EN LA QUE UN JUGADOR PIERDE LA CONEXIÓN CON EL SISTEMA DURANTE MÁS DE 6 SEGUNDO.</div><div>SI SE PRODUCE UNA DESCONEXIÓN DURANTE LA FASE DE RECEPCIÓN DE APUESTAS DESPUÉS DE QUE UN JUGADOR HAYA APOSTADO, LA APUESTA SEGUIRÁ SIENDO VÁLIDA. CUANDO COMIENCE LA PARTIDA, LA APUESTA DEL JUGADOR PARTICIPARÁ EN ESA RONDA. SI EL JUGADOR VUELVE A CONECTARSE ANTES DEL FIN DE LA RONDA, PODRÁ SEGUIR JUGANDO Y COBRAR SUS GANANCIAS EN CUALQUIER MOMENTO. SIN EMBARGO, SI EL JUGADOR NO REGRESA, LA PARTIDA CONTINUARÁ HASTA ALCANZAR EL LÍMITE MÁXIMO DE GANANCIAS. LAS GANANCIAS SE COBRARÁN Y SE AÑADIRÁN A LA CUENTA DEL JUGADOR, A NO SER QUE LA PARTIDA SE BLOQUEE ANTES DE LLEGAR AL LÍMITE MÁXIMO DE GANANCIAS, EN CUYO CASO LA APUESTA DEL JUGADOR SE CONSIDERARÁ PERDIDA.</div><div>SI SE PRODUCE UNA DESCONEXIÓN ANTES DE LA FASE DE RECEPCIÓN DE APUESTAS DE LA RONDA SIGUIENTE, EL IMPORTE DE LA APUESTA DEL JUGADOR SE ANULARÁ Y SE DEVOLVERÁ A SU SALDO. PERO SI EL SISTEMA DETECTA UNA DESCONEXIÓN EN UNA ETAPA SIGUIENTE A LA FASE DE RECEPCIÓN DE APUESTAS, UTILIZARÁ LAS REGLAS ESTABLECIDAS PARA ESA ETAPA.</div><div>SI SE PRODUCE UNA DESCONEXIÓN DESPUÉS DEL INICIO DE LA RONDA, CUANDO LOS MULTIPLICADORES DEL JUEGO YA ESTÁN AUMENTANDO, EL SISTEMA PAGARÁ AL JUGADOR CON EL VALOR DEL MULTIPLICADOR EXISTENTE CUANDO SE DETECTÓ LA DESCONEXIÓN.</div><div>SI UN JUGADOR ESTÁ UTILIZANDO EL MODO DE COBRO AUTOMÁTICO BASADO EN UN MULTIPLICADOR ESPECÍFICO, Y SE PRODUCE UNA DESCONEXIÓN, LA APUESTA PERMANECERÁ ACTIVA HASTA QUE EL JUEGO ALCANCE EL VALOR DE COBRO AUTOMÁTICO MENCIONADO.EN ESE MOMENTO, SE ABONARÁ LA APUESTA.SIN EMBARGO, SI EL JUEGO SE CAE ANTES DE ALCANZAR ESTE VALOR, LA APUESTA SE CONSIDERARÁ PERDIDA.</div><div>SI EL MODO DE JUEGO AUTOMÁTICO ESTÁ ACTIVADO Y SE PRODUCE UNA DESCONEXIÓN, EL MODO AUTOMÁTICO SE DESACTIVARÁ DESPUÉS DE LA SIGUIENTE RONDA </div></div>                     </div>                 <div class="rules-item rules-jackpot">                      <div class="rules-title">¿CÓMO SE OBTIENEN LOS JACKPOTS?</div>                     <div class="rules-content"><div> SI EL JUGADOR SE DESCONECTA Y LA APUESTA ESTÁ ACTIVA: 1. LA APUESTA SE MANTIENE HASTA QUE TERMINE LA RONDA, EL JUGADOR PUEDE COBRAR MANUALMENTE LA GANANCIA SI VUELVE ANTES DE QUE SE TERMINE LA RONDA. EN CASO CONTRARIO, LA APUESTA SIGUE EN JUEGO HASTA QUE PIERDA O ALCANCE EL TOPE DE GANANCIA MÁXIMA. 2. SI EL "COBRO AUTOMÁTICO" ESTÁ ACTIVADO, LA GANANCIA SE COBRARÁ AUTOMÁTICAMENTE SI EL AVIÓN ALCANZA EL MULTIPLICADOR PREESTABLECIDO. EL IMPORTE GANADOR SE AÑADIRÁ A TU SALDO. </div></div>                 </div>                 <div><br><br> LOS USUARIOS CONDENADOS POR FRAUDE Y VIOLACIÓN DE LAS NORMAS Y CONDICIONES DE USO DEL SITIO WEB, TENDRÁN LIMITADA SU CAPACIDAD DE UTILIZAR LOS PRODUCTOS Y RECURSOS DEL SITIO WEB. EL NIVEL DE LIMITACIÓN LO DETERMINARÁ LA ADMINISTRACIÓN DEL SITIO WEB.     NOS RESERVAMOS EL DERECHO DE CAMBIAR LAS REGLAS DEL JUEGO O DE CANCELARLO COMPLETAMENTE.<br> EL MAL FUNCIONAMIENTO ANULA TODOS LOS PAGOS Y JUGADAS</div></div>
+        </div>
+    </div>
+
+    <div class="gift-popup">
+        <div class="gift-popup-background"></div>
+        <div class="gift-popup-div">
+            <div class="gift-popup-head">
+                FREESPINS
+                <div class="gift-popup-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="16px">
+                        <path fill-rule="evenodd" fill="rgb(95, 95, 95)" d="M10.393,7.996 L16.699,1.700 C17.091,1.309 17.091,0.675 16.699,0.284 C16.307,-0.107 15.673,-0.107 15.281,0.284 L8.975,6.580 L2.668,0.284 C2.276,-0.107 1.642,-0.107 1.250,0.284 C0.858,0.675 0.858,1.309 1.250,1.700 L7.557,7.996 L1.250,14.292 C0.858,14.683 0.858,15.317 1.250,15.708 C1.446,15.903 1.703,16.001 1.959,16.001 C2.215,16.001 2.472,15.903 2.668,15.708 L8.975,9.412 L15.281,15.708 C15.477,15.903 15.734,16.001 15.990,16.001 C16.246,16.001 16.503,15.903 16.699,15.708 C17.091,15.317 17.091,14.683 16.699,14.292 L10.393,7.996 Z"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="gift-popup-content">
+                <div class="gift-new">
+                    <div class="gift-new-head">¡Felicidades! Tienes</div>
+                    <div class="gift-new-info">
+                        <div class="item giftSpinsStartAmount">10</div>
+                        <div class="item">x</div>
+                        <div class="item giftSpinAmount">0.50</div>
+                        <div class="item"><span class="currency"></span></div>
+                        <div class="text">FREESPINS</div>
+                    </div>
+
+                    <div class="gift-new-buttons">
+                        <div class="gift-new-button big gift-button-accept">Usar</div>
+                        <div class="gift-new-button gift-button-remind-me">Recordármelo más tarde</div>
+                        <div class="gift-new-button gift-button-cancel">Cancelar</div>
+                    </div>
+                </div>
+
+
+                <div class="gift-cancel none">
+                    <div class="gift-cancel-icon"></div>
+                    <div class="gift-cancel-text1">
+                        Si cancelas perderás todos los Giros Gratis
+                    </div>
+                    <div class="gift-cancel-text2">
+                        ¿Realmente quieres cancelar?
+                    </div>
+
+                    <div class="gift-new-buttons">
+                        <div class="gift-new-button gift-button-cancel-yes">Sí</div>
+                        <div class="gift-new-button green gift-button-cancel-no">No</div>
+                    </div>
+                </div>
+
+                <div class="gift-win none">
+                    <div class="gift-win-title">¡Felicidades!</div>
+                    <div class="gift-win-text">Has ganado en Giros Gratis</div>
+                    <div class="gift-win-info">
+                        <div class="win giftSpinTotalWin">1212</div>
+                    </div>
+
+                    <div class="gift-new-buttons">
+                        <div class="gift-new-button big gift-button-gift-exit">Cerrar</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    </form>
+
+
+    <script src="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/Scripts/react/react.production.min.js"></script>
+    <script src="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/Scripts/react/react-dom.production.min.js"></script>
+    <script src="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/Scripts/react/babel.min.js"></script>
+    <script src="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/Scripts/react/react.js" type="text/babel"></script>
+
+    <script src="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/Scripts/lib/jquery-3.4.1.min.js"></script>
+    <script src="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/Scripts/lib/pixi.min.js"></script>
+    <script src="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/Scripts/lib/pixi-spine.min.js"></script>
+    <script src="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/Scripts/lib/bowser.js"></script>
+    <script src="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/Scripts/lib/soundjs.combined.js"></script>
+
+    <script src="../Content/Scripts/signalR/jquery.signalR-2.2.1.min.js"></script>
+    <script src="../signalr/hubs"></script>
+
+    
+    <script>
+        window.hub = $.connection.jetXConnectionHub;
+
+        $.connection.hub.qs = { "token": "1d65f12a-6862-4288-8676-42716c273f47", "group": "JetX" };
+        $.connection.hub.start().done(() => {
+            hubGetList();
+            timerPing();
+        });
+
+        window.token = "1d65f12a-6862-4288-8676-42716c273f47";
+
+        window.hub.client.message = function (message) {
+
+        };
+
+        $(window).on('load', function (e) {
+            //InitializeUrls("https://", "JetXapi", "");
+            let url = window.location.href; let arr = url.split("/"); let result = arr[0] + "//"; for (let i = 1; i < arr.length - 2; i++) if (arr[i] !== '') result += arr[i] + '/'; InitializeUrls(result, "JetXapi", "");
+        });
+    </script>
+
+    <script>
+    let locale = {};
+    </script>
+    <script src="/JetXNode31/content/Scripts/Locale.ashx?locale=es&amp;version=c9cf9654-db79-4f5f-bd0b-91f9b4d4fde1"></script>
+    <script src="https://mt-static.ssgcontent.com/cache/b1/JetXStg3/Content/Scripts/JetX.light.js"></script>
+    <script src="https://mt-static.ssgcontent.com/cache/b2/Themes/Default/JetX/Scripts/JetX.js"></script>
+
+    <script>
+         </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-170481692-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-170481692-1');
+</script>
+<script>
+    </script>
+
+
+<span style="display: none; font: 13px CrystalUni-Medium;">500</span></body></html>

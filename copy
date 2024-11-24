@@ -1,0 +1,21 @@
+#info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Cambiado para alinear a la derecha */
+    margin-top: 10px;
+    color: white;
+    position: absolute; /* Añadido para posicionar */
+    top: 400px; /* Ajusta según necesites */
+    right: 1px; /* Ajusta según necesites */
+}
+#hora-extraida, #diferencia-tiempo {
+    text-align: right; /* Cambiar a la derecha */
+    font-size: 16px;
+    margin: 5px;
+}
+.label {
+    text-align: right; /* Cambiar a la derecha */
+    font-size: 11px;
+    color: white;
+    margin-bottom: 0px;
+}

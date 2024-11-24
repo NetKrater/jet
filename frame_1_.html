@@ -1,0 +1,393 @@
+<!DOCTYPE html><html><head><link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<title>Jackpod BetPlay</title>
+<style>
+      
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+            font-size: 12px;
+            font-family: 'Montserrat-Medium', 'Montserrat' !important;
+      }
+      .jackpod {
+        padding: 1em;
+        color: #fff;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color:  #00133B ;
+       
+      }
+      .text-center {
+        text-align: center;
+      }
+      .text-gold {
+        color:#EFB810;
+      }
+      .text-silver {
+        color:#E3E4E5;
+      }
+      .text-bronze {
+        color: #cd7f32;
+      }
+      .title {
+            background: -webkit-linear-gradient(#fff, #07a0f3, #c7d9ff, #00a1db, #FFF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 4em;
+        font-family: emoji;
+        text-transform: uppercase;
+      }
+
+      .description
+      {
+        margin-bottom: 1em;
+      }
+
+      .container
+      {
+        text-align: center;
+        max-width: 500px;
+      }
+
+      .content-price h1,
+      .content-price h3
+      { 
+        color: #FFF;
+      }
+      .content-price
+      {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        background:#00133B;
+        
+      }
+
+      .title-price
+      {
+        color:#fbed78;
+        font-weight: bold; 
+      }
+
+      .content-prices-general
+      {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .fs-xl 
+      {
+        font-size:2em; 
+      }
+
+      .fs-x
+      {
+        font-size:1.5em; 
+      }
+
+      .content-prices-parent
+      {
+          width: 100%;
+      }
+      p, h1, h2, h3
+      {
+        margin-bottom: 0 !important;
+      }
+      .Extra{
+        color: #d4ff00;
+		    font-weight: bold;
+       
+      }
+      #firstPrice
+      {
+        color: #d4ff00;
+		    font-weight: bold
+      }
+      .Super{
+        color:   #00E836;
+		    font-weight: bold;
+       
+      }
+    
+      #secondPrice
+      {
+        color:   #00E836;
+		    font-weight: bold
+      }
+      .Mega{
+        color: #8EFF00;
+		    font-weight: bold;
+       
+      }
+      #thirdPrice
+      {
+        color: #8EFF00;
+		    font-weight: bold
+      }
+
+      img {
+        width: 100%;
+      }
+
+      .logo
+      {
+           max-width: 210px;
+           margin: 0 0 0 4em;
+      }
+
+      .font-weight-bold
+      {
+      	font-weight:bold;
+      }
+
+      body
+      {
+      	font-size:.9em;
+      }
+      .container-prices{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1.5fr; 
+        padding:  0 4em;
+        grid-gap: 25px;
+      }
+      .content-image{
+        display: flex;
+        align-items: center;
+      }
+      h4{
+        font-size: 1.1rem !important;
+      }
+      p
+      {
+        font-size: 0.7rem !important;
+        color:#8F97A9;
+      }
+      h3{
+        font-size: 1.5rem !important;
+      }
+    .boton-ayuda{
+      
+      background: -webkit-linear-gradient(#d4ff00, #0cff00);
+      width: 15%;
+      height: 35%;
+      border-radius: 100%;
+      border: none;
+      font-size: small;
+      font-weight: 700;
+    }
+    .boton-close{
+      background: #00133B;
+      color: white;
+      width: 11%;
+      height: 15%;
+      border-radius: 100%;
+      border: none;
+      font-size: x-small;
+      font-weight: 700;
+      margin: 0 0  0 15px;
+    }
+    .info-progresive{
+      color:#00133B !important;
+      font-size: 0.8rem !important;
+      font-weight: bold;
+    }
+    @media (min-width: 700px) and (max-width: 920px) {
+      h4{
+        font-size: 0.8rem !important;
+      }
+    h3{
+     font-size: 1rem !important;
+      }
+    p{
+        font-size: 0.6rem !important;
+      }
+    .container-prices{
+      padding: 0  2em;
+      grid-gap: 5px !important;
+      }
+      .logo{
+        margin: 0 0 0 2em;
+        max-width:170px;
+      }
+    }
+    @media (min-width: 427px) and (max-width: 699px) {
+      h4{
+        font-size: 0.6rem !important;
+      }
+    h3{
+     font-size: 0.8rem !important;
+      }
+    p{
+        font-size: 0.4rem !important;
+      }
+      .container-prices{
+      padding: 0  1em;
+      grid-gap: 5px !important;
+      }
+      .logo{
+        margin: 0 0 0 2em;
+        max-width:120px;
+      }
+    }
+  	@media (max-width: 426px) {
+		body {
+			font-size: .4em !important;
+		}
+    .content-price{
+      align-items: center;
+    }
+		.logo
+		{
+			max-width:150px;
+      margin: 6px;
+		}
+  .container-prices{
+    display: grid;
+    grid-template-columns: 1fr ;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-gap: 7px 0;
+    justify-items: center;
+  }
+  h4{
+        font-size: 0.8rem !important;
+      }
+  h3{
+     font-size: 1.1rem !important;
+    }
+    p{
+        font-size: 0.6rem !important;
+      }
+  .content-image {
+   grid-row: 1 / 2;
+}
+  .content-prices-general{
+    align-items: center;
+  }
+	}
+
+    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+<div class="jackpod">
+<div class="text-center content-prices-parent">
+<div class=" m-0 mb-0 mb-md-0 container-prices">
+<div class="content-prices-general mb-0 ">
+<div class="content-price">
+<h4 class="Mega mb-0"> Mega </h4>
+<h3 id="thirdPrice"><label>$0</label></h3>
+</div>
+<p class=" font-weight-bold mb-0 text-center">Gana hasta $500 Millones</p>
+</div>
+<div class="content-prices-general mb-0 content-super ">
+<div class="content-price">
+<h4 class="Super mb-0"> Super </h4>
+<h3 id="secondPrice"><label>$0</label></h3>
+</div>
+<p class=" font-weight-bold mb-0 text-center">Gana hasta $20 Millones</p>
+</div>
+<div class="content-prices-general mb-0 content-extra ">
+<div class="content-price">
+<h4 class="Extra mb-0"> Extra </h4>
+<h3 id="firstPrice"><label>$0</label></h3>
+</div>
+<p class=" font-weight-bold mb-0 text-center">Gana hasta $1 Millón</p>
+</div>
+<div class="content-image">
+<img class="logo" src="misterynew2.png" alt="logo de progresive play" title="logo e info general de progresive play">
+</div>
+</div>
+</div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+      const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+      const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    
+      let duration = 60000;
+      let percentage = 0.999;
+      getFileInfo();
+      setInterval(function(){
+        getFileInfo();
+      }, 30000);
+    
+      function getFileInfo() {
+        $.ajax({
+          url: '/jackpod.json',
+          method: 'GET',
+          success: function(_data) {
+            const data = JSON.parse(JSON.stringify(_data));
+            console.log("jackpod.json:", data);
+            console.log(data);
+    
+            const obj1 = document.querySelector("#firstPrice label");
+    
+            if (parseInt(obj1.innerHTML.replace("$", "").replace(/\./g, "")) != data[0].MONTO_ACTUAL) {
+              if (parseInt(obj1.innerHTML.replace("$", "").replace(/\./g, "")) < data[0].MONTO_ACTUAL && obj1.innerHTML.replace("$", "").replace(/\./g, "") != 0) {
+                animateValue(obj1, parseInt(obj1.innerHTML.replace("$", "").replace(/\./g, "")), data[0].MONTO_ACTUAL, duration);
+              } else if (data[0].VALOR_MINIMO < data[0].MONTO_ACTUAL) {
+                animateValue(obj1, data[0].MONTO_ACTUAL * percentage, data[0].MONTO_ACTUAL, duration);
+              } else {
+                animateValue(obj1, 0, data[0].MONTO_ACTUAL, duration);
+              }
+            }
+    
+            const obj2 = document.querySelector("#secondPrice label");
+    
+            if (parseInt(obj2.innerHTML.replace("$", "").replace(/\./g, "")) != data[1].MONTO_ACTUAL) {
+              if (parseInt(obj2.innerHTML.replace("$", "").replace(/\./g, "")) < data[1].MONTO_ACTUAL && obj2.innerHTML.replace("$", "").replace(/\./g, "") != 0) {
+                animateValue(obj2, parseInt(obj2.innerHTML.replace("$", "").replace(/\./g, "")), data[1].MONTO_ACTUAL, duration);
+              } else if (data[1].VALOR_MINIMO < data[1].MONTO_ACTUAL) {
+                animateValue(obj2, data[1].MONTO_ACTUAL * percentage, data[1].MONTO_ACTUAL, duration);
+              } else {
+                animateValue(obj2, 0, data[1].MONTO_ACTUAL, duration);
+              }
+            }
+    
+            const obj3 = document.querySelector("#thirdPrice label");
+    
+            if (parseInt(obj3.innerHTML.replace("$", "").replace(/\./g, "")) != data[2].MONTO_ACTUAL) {
+              if (parseInt(obj3.innerHTML.replace("$", "").replace(/\./g, "")) < data[2].MONTO_ACTUAL && obj3.innerHTML.replace("$", "").replace(/\./g, "") != 0) {
+                animateValue(obj3, parseInt(obj3.innerHTML.replace("$", "").replace(/\./g, "")), data[2].MONTO_ACTUAL, duration);
+              } else if (data[2].VALOR_MINIMO < data[2].MONTO_ACTUAL) {
+                animateValue(obj3, data[2].MONTO_ACTUAL * percentage, data[2].MONTO_ACTUAL, duration);
+              } else {
+                animateValue(obj3, 0, data[2].MONTO_ACTUAL, duration);
+              }
+            }
+          },
+          error: function(xhr, status, error) {
+            console.log("Error al obtener información del archivo JSON:", error);
+          }
+        });
+      }
+    
+      function animateValue(obj, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          obj.innerHTML = "$" + new Intl.NumberFormat("de-DE").format(Math.floor(progress * (end - start) + start));
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          }
+        };
+        window.requestAnimationFrame(step);
+      }
+    </script>
+
+</body></html>
